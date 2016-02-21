@@ -33,6 +33,4 @@ Route::group(['middleware' => ['web']], function () {
 
 });
 
-Route::controller('api', "ApiController");
-
 
