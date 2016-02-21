@@ -33,7 +33,7 @@ Route::group(['middleware' => ['web']], function () {
 
 });
 
-Route::group(['middleware' => ['auth:api']], function () {
+Route::group(['middleware' => ['asda']], function () {
     Route::controller('api', "ApiController");
 
 });
