@@ -30,6 +30,10 @@
 Route::group(['middleware' => ['web']], function () {
     Route::controller('/questions', "QuestionsController");
     Route::controller('/', "HomeController");
+
+});
+
+Route::group(['middleware' => ['auth:api']], function () {
     Route::controller('api', "ApiController");
 
 });
