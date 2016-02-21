@@ -7,12 +7,13 @@
  */
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 
 
 
 class ApiController extends Controller
 {
-    public function postLoginOrRegisterGoogle(\Request $request) {
+    public function postLoginOrRegisterGoogle(Request $request) {
         return $request->get("jsonData");
     }
 }
