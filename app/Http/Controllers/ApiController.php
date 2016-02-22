@@ -7,6 +7,7 @@
  */
 
 namespace App\Http\Controllers;
+use App\Http\UsersAppModel;
 use App\QuestionsModel;
 use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
@@ -32,7 +33,7 @@ class ApiController extends Controller
             $simId = $request->get("simId");
 
 
-            $user = QuestionsModel::where("google_id", $googleId)->where("simId", bin2hex(sha1($simId)))->first();
+            $user = UsersAppModel::where("google_id", $googleId)->where("simId", bin2hex(sha1($simId)))->first();
 
             if (!$user) {
                 $response["registered"] = false;
