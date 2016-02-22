@@ -19,17 +19,17 @@ class ApiController extends Controller
         $response["status"] = 1;
 
         try {
-            $jsonData = json_decode($request->get("jsonData"));
+
 
             //Check JSON valid structure
-            if (!array_key_exists("accountId") || !$jsonData["accountId"])
+            if (!$request->exists("accountId") || !$request->get("accountId"))
                 abort(400);
 
-            if (!array_key_exists("simId") || !$jsonData["simId"])
+            if (!$request->exists("simId") || !$request->get("simId"))
                 abort(400);
 
-            $googleId = $jsonData["accountId"];
-            $simId = $jsonData["simId"];
+            $googleId = $request->get("accountId");
+            $simId = $request->get("simId");
 
 
             $user = QuestionsModel::where("google_id", $googleId)->where("simId", bin2hex(sha1($simId)))->first();
