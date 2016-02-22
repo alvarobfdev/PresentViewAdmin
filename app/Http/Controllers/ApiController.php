@@ -7,13 +7,52 @@
  */
 
 namespace App\Http\Controllers;
+use App\QuestionsModel;
 use Illuminate\Http\Request;
-
+use Mockery\CountValidator\Exception;
 
 
 class ApiController extends Controller
 {
-    public function postLoginOrRegisterGoogle(Request $request) {
-        return $request->get("jsonData");
+    public function postLoginByGoogle(Request $request) {
+
+        $response["status"] = 1;
+
+        try {
+            $jsonData = json_decode($request->get("jsonData"));
+
+            //Check JSON valid structure
+            if (!array_key_exists("accountId") || !$jsonData["accountId"])
+                abort(400);
+
+            if (!array_key_exists("simId") || !$jsonData["simId"])
+                abort(400);
+
+            $googleId = $jsonData["accountId"];
+            $simId = $jsonData["simId"];
+
+
+            $user = QuestionsModel::where("google_id", $googleId)->where("simId", bin2hex(sha1($simId)))->first();
+
+            if (!$user) {
+                $response["registered"] = false;
+                return $response;
+            }
+
+
+            $response["registered"] = true;
+            $response["token"] = sha1(uniqid());
+            $user->token = $response["token"];
+            $user->save();
+
+            return $response;
+
+        }
+        catch(Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+
     }
 }
