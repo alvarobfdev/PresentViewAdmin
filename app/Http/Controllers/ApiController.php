@@ -35,7 +35,7 @@ class ApiController extends Controller
             $simId = $request->get("simId");
 
 
-            $user = UsersAppModel::where("google_id", $googleId)->where("sim_id", bin2hex(sha1($simId)))->first();
+            $user = UsersAppModel::where("google_id", $googleId)->where("sim_id", $simId)->first();
 
             if (!$user) {
                 $response["registered"] = false;
