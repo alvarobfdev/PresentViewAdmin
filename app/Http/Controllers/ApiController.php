@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 use App\Http\UsersAppModel;
 use App\QuestionsModel;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Mockery\CountValidator\Exception;
@@ -76,12 +77,14 @@ class ApiController extends Controller
                 return $response;
             }
 
+            $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
+
             $userRegistrated = RegistrationController::getInstance()->registerUser(
                 $request->get("email"),
                 $request->get("gender"),
                 $request->get("provincia"),
                 $request->get("ciudad"),
-                $request->get("birthdate"),
+                $birthdate,
                 $request->get("sim_id"),
                 $request->get("google_id")
             );
