@@ -15,4 +15,8 @@ class UsersAppModel extends Model
 {
     protected $table = "app_users";
 
+    public static function existsGoogleAccount($googleId) {
+        return self::where("google_id", $googleId)->first();
+    }
+
 }
