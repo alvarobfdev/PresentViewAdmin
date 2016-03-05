@@ -72,10 +72,14 @@ class ApiController extends Controller
 
             $googleId = $request->get("google_id");
 
-            if (UsersAppModel::existsGoogleAccount($googleId)) {
+            $user = UsersAppModel::existsGoogleAccount($googleId);
+
+            if(!$user && UsersAppModel::existsSimAccount($request->get("sim_id"))) {
                 $response["alreadyRegistered"] = true;
                 return $response;
             }
+
+
 
             $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
 
@@ -86,7 +90,8 @@ class ApiController extends Controller
                 $request->get("ciudad"),
                 $birthdate,
                 $request->get("sim_id"),
-                $request->get("google_id")
+                $request->get("google_id"),
+                $user
             );
 
             if(!$userRegistrated) {

@@ -19,4 +19,8 @@ class UsersAppModel extends Model
         return self::where("google_id", $googleId)->first();
     }
 
+    public static function existsSimAccount($simId) {
+        return self::where("sim_id", $simId)->first();
+    }
+
 }
