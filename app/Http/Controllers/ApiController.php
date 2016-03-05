@@ -44,9 +44,9 @@ class ApiController extends Controller
 
 
             $response["registered"] = true;
-            $response["token"] = sha1(uniqid());
-            $user->token = $response["token"];
+            $user->token = sha1(uniqid());
             $user->save();
+            $response["user"] = $user;
 
             return $response;
 
