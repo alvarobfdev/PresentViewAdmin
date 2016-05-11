@@ -17,6 +17,45 @@ use Mockery\CountValidator\Exception;
 
 class ApiController extends Controller
 {
+
+    public function postStandardLogin(Request $request) {
+        $response["status"] = 1;
+        $response["is_google_account"] = false;
+        $response["registered"] = true;
+
+        try {
+            $email = $request->get("user");
+            $pass = $request->get("pass");
+            $user = UsersAppModel::where("email", $email);
+            if(!$user) {
+                $response["registered"] = false;
+                return $response;
+            }
+
+            if($user->google_id) {
+                $response["is_google_account"] = true;
+                return $response;
+            }
+
+            if($user->password != md5(sha1($pass))) {
+                $response["registered"] = false;
+                return $response;
+            }
+
+            $user->token = sha1(uniqid());
+            $response["user"] = $user;
+            $user->save();
+            return $response;
+
+            
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+    }
+
     public function postLoginByGoogle(Request $request) {
 
         $response["status"] = 1;
