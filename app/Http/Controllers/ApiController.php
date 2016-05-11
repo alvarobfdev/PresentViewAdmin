@@ -26,7 +26,7 @@ class ApiController extends Controller
         try {
             $email = $request->get("user");
             $pass = $request->get("pass");
-            $user = UsersAppModel::where("email", $email);
+            $user = UsersAppModel::where("email", $email)->first();
             if(!$user) {
                 $response["registered"] = false;
                 return $response;
