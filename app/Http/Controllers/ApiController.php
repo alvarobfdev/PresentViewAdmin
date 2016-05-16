@@ -20,13 +20,13 @@ class ApiController extends Controller
 
     public function postVerifyToken(Request $request) {
         $response["status"] = 1;
-        $response["isValidToken"] = 0;
+        $response["isValidToken"] = false;
         try {
             $email = $request->get("email");
             $token = $request->get("token");
             $user = UsersAppModel::where("email", $email)->where("token", $token)->first();
             if($user) {
-                $response["isValidToken"] = 1;
+                $response["isValidToken"] = true;
             }
             return $response;
         }
