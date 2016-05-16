@@ -18,6 +18,24 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
+    public function postVerifyToken(Request $request) {
+        $response["status"] = 1;
+        $response["isValidToken"] = 0;
+        try {
+            $email = $request->get("email");
+            $token = $request->get("token");
+            $user = UsersAppModel::where("email", $email)->where("token", $token)->first();
+            if($user) {
+                $response["isValidToken"] = 1;
+            }
+            return $response;
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+    }
     public function postStandardLogin(Request $request) {
         $response["status"] = 1;
         $response["is_google_account"] = false;
