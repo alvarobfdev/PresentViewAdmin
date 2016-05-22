@@ -9,6 +9,7 @@
 namespace App;
 
 
+use App\Http\Controllers\FirebaseMessagingController;
 use Illuminate\Database\Eloquent\Model;
 
 class Revision extends Model
@@ -20,6 +21,11 @@ class Revision extends Model
         $revision->revision++;
         $revision->save();
 
-        //Fire send message event
+        FirebaseMessagingController::sendMessage(
+            [
+                "subject" => "updatedRevision",
+                "revision" => $revision->revision
+            ]
+        );
     }
 }
