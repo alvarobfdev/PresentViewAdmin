@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\AnswersModel;
 use App\QuestionsModel;
+use App\Revision;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -94,6 +95,8 @@ class QuestionsController extends Controller
             }
 
             if(!$question->answers()->save($answer)) {
+                $question->answers()->delete();
+                $question->delete();
                 return redirect('questions/add')
                     ->withErrors(["fail_bbdd" => "Errror grave 1002: Consulte al administrador"])
                     ->withInput();
@@ -101,8 +104,7 @@ class QuestionsController extends Controller
 
         }
 
-
-
+        Revision::updateRevision();
 
         return redirect('questions')->withOk("Pregunta registrada con éxito");
 
