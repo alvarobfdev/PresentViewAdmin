@@ -36,9 +36,9 @@ class FirebaseMessagingController
     // Send the request
         $response = file_get_contents($message->getUrl(), FALSE, $context);
 
-    // Check for errors
+        // Check for errors
         if($response === FALSE){
-            die('Error');
+            return ["fail_url_fcm" => "Fallo al enviar notificación a la app!"];
         }
 
     // Decode the response
