@@ -95,7 +95,6 @@ class QuestionsController extends Controller
             }
 
             if(!$question->answers()->save($answer)) {
-                $question->answers()->delete();
                 $question->delete();
                 return redirect('questions/add')
                     ->withErrors(["fail_bbdd" => "Errror grave 1002: Consulte al administrador"])
@@ -107,7 +106,6 @@ class QuestionsController extends Controller
         $result = Revision::updateRevision();
 
         if($result != "success") {
-            $question->answers()->delete();
             $question->delete();
             return redirect('questions/add')
                 ->withErrors($result)
