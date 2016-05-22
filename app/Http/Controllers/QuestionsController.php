@@ -104,7 +104,15 @@ class QuestionsController extends Controller
 
         }
 
-        Revision::updateRevision();
+        $result = Revision::updateRevision();
+
+        if($result != "success") {
+            $question->answers()->delete();
+            $question->delete();
+            return redirect('questions/add')
+                ->withErrors($result)
+                ->withInput();
+        }
 
         return redirect('questions')->withOk("Pregunta registrada con éxito");
 

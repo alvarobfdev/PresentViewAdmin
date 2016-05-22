@@ -19,13 +19,21 @@ class Revision extends Model
     public static function updateRevision() {
         $revision = self::where("id", 1)->first();
         $revision->revision++;
-        $revision->save();
+        if(!$revision->save()) {
+            return ["fail_bbdd"=>"Error grave 1003: Consulte a un administrador"];
+        }
 
-        FirebaseMessagingController::sendMessage(
+        $result = FirebaseMessagingController::sendMessage(
             [
                 "subject" => "updatedRevision",
                 "revision" => $revision->revision
             ]
         );
+
+        if($result != "success") {
+            $revision->revision--;
+            $revision->save();
+        }
+        return $result;
     }
 }

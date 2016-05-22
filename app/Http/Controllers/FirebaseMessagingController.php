@@ -38,13 +38,17 @@ class FirebaseMessagingController
 
         // Check for errors
         if($response === FALSE){
-            return ["fail_url_fcm" => "Fallo al enviar notificación a la app!"];
+            return ["fail_url_fcm" => "ConnectionFailure: Fallo al enviar notificación a la app!"];
         }
 
-    // Decode the response
+        // Decode the response
         $responseData = json_decode($response, TRUE);
 
-        dd($responseData);
+        if(array_key_exists("failure", $responseData) && $responseData["failure"]) {
+            return ["fail_fcm" => "{$responseData["results"][0]["error"]}: Fallo al enviar notificación a la app!"];
+        }
+
+        else return "success";
 
     }
 }
