@@ -14,7 +14,7 @@ class FirebaseCloudMessage
     protected $url = "https://fcm.googleapis.com/fcm/send";
     protected $authKey = "AIzaSyBPKEUeFO-0tDTq8hhOHn3BCp2NoYWAoNQ";
 
-    public $to = "topics/global";
+    public $to = "/topics/global";
     public $data = [];
 
     /**
