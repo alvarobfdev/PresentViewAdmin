@@ -18,7 +18,7 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
-    public function getNextQuestions(Request $request) {
+    public function postGetNextQuestions(Request $request) {
         $response["status"] = 1;
         try {
             $now = time();
