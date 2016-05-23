@@ -23,6 +23,8 @@ class ApiController extends Controller
         try {
             $now = time();
             $timeMinus = $now - 120;
+            $now = Carbon::createFromTimestamp($now)->toDateTimeString();
+            $timeMinus = Carbon::createFromTimestamp($timeMinus)->toDateTimeString();
             $questions = QuestionsModel::where("time_ini", ">", $now)->orWhere(function($query) use ($now, $timeMinus)
             {
                 $query->where('time_ini', '<', $now)
