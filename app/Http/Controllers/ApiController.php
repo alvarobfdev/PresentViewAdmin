@@ -20,7 +20,7 @@ class ApiController extends Controller
 
 
     public function postAllQuestions() {
-        dd(Carbon::now()->toDateTimeString());
+        dd(Carbon::now('Europe/Madrid')->toDateTimeString());
         return QuestionsModel::all()->toJson();
     }
     public function postGetNextQuestions(Request $request) {
