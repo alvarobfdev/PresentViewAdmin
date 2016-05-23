@@ -18,6 +18,45 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
+    public function getNextQuestions(Request $request) {
+        $response["status"] = 1;
+        try {
+            $now = time();
+            $timeMinus = $now - 120;
+            $questions = QuestionsModel::where("time_ini", ">", $now)->orWhere(function($query) use ($now, $timeMinus)
+            {
+                $query->where('time_ini', '<', $now)
+                    ->where('time_ini', '>', $now);
+            })->get();
+
+            $result["questions"] = $questions;
+            return json_encode($result);
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+    }
+    public function postGetNextAnswers(Request $request) {
+        $response["status"] = 1;
+        try {
+            $token = $request->get("token");
+            $user = UsersAppModel::where("token", $token)->first();
+            if(!$user) {
+                abort(401);
+            }
+            $now = time();
+            $now = Carbon::createFromTimestamp($now)->format("Y-m-d H:m:s");
+            return QuestionsModel::where("time_ini", ">", $now)->get()->toJson();
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+    }
+
     public function postVerifyToken(Request $request) {
         $response["status"] = 1;
         $response["isValidToken"] = false;
