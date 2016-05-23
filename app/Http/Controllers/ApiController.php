@@ -18,6 +18,10 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
+
+    public function postAllQuestions() {
+        return QuestionsModel::all()->toJson();
+    }
     public function postGetNextQuestions(Request $request) {
         $response["status"] = 1;
         try {
