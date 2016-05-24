@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 use App\Http\UsersAppModel;
 use App\QuestionsModel;
+use App\Revision;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -19,9 +20,17 @@ class ApiController extends Controller
 {
 
 
-    public function postAllQuestions() {
-        dd(Carbon::now('Europe/Madrid')->toDateTimeString());
-        return QuestionsModel::all()->toJson();
+    public function postGetRevision() {
+        $response["status"] = 1;
+        try {
+            $revision = Revision::where("id", 1)->first();
+            return $revision;
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
     }
     public function postGetNextQuestions(Request $request) {
         $response["status"] = 1;
