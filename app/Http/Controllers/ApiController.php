@@ -42,7 +42,7 @@ class ApiController extends Controller
             $questions = QuestionsModel::where("time_ini", ">", $now)->orWhere(function($query) use ($now, $timeMinus)
             {
                 $query->where('time_ini', '<', $now)
-                    ->where('time_ini', '>', $now);
+                    ->where('time_ini', '>', $timeMinus);
             })->get();
 
             $result["questions"] = $questions;
