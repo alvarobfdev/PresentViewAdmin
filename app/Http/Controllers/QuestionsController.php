@@ -91,7 +91,7 @@ class QuestionsController extends Controller
                 \Image::make($pathUploadedFile)->resize(100, null, function ($constraint) {
                     $constraint->aspectRatio();
                 })->save(storage_path("app/answers_images/$imageExtension"));
-                $answer->img_url = url('api/get-image/'.$imageName);
+                $answer->img_uri = url('api/get-image/'.$imageName);
                 $answer->img_id = $imageName;
                 $answer->img_saved_name = $imageExtension;
             }
