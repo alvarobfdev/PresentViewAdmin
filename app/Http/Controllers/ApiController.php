@@ -52,7 +52,7 @@ class ApiController extends Controller
                 $query->where('time_ini', '<', $now)
                     ->where('time_ini', '>', $timeMinus);
             })->get();
-            $questions->answers();
+            $questions->load('answers');
             dd($questions->toJSON());
 
             $result["questions"] = $questions;
