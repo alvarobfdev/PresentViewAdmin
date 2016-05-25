@@ -19,6 +19,9 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
+    public function postGetImage($imageName) {
+        dd($imageName);
+    }
 
     public function postGetRevision() {
         $response["status"] = 1;
@@ -247,6 +250,8 @@ class ApiController extends Controller
 
         return $result;
     }
+
+
 
 
 }

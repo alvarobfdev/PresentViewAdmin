@@ -87,11 +87,11 @@ class QuestionsController extends Controller
                 $pathUploadedFile = $answersImages[$index]->getPathName();
                 $extension = $answersImages[$index]->getClientOriginalExtension();
                 $imageName = uniqid();
-                $imageName = $imageName.".".$extension;
+                $imageExtension = $imageName.".".$extension;
                 \Image::make($pathUploadedFile)->resize(100, null, function ($constraint) {
                     $constraint->aspectRatio();
-                })->save(storage_path("app/answers_images/$imageName"));
-                $answer->img_uri = $imageName;
+                })->save(storage_path("app/answers_images/$imageExtension"));
+                $answer->img_uri = url('api/get-image/'.$imageName);
             }
 
             if(!$question->answers()->save($answer)) {
