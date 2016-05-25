@@ -20,7 +20,7 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
-    public function postGetImage($imageName) {
+    public function getGetImage($imageName) {
         $answer = AnswersModel::where("img_id", $imageName)->first();
         if(!$answer) {
             abort(401);
