@@ -31,6 +31,9 @@ class ApiController extends Controller
             $answerId = $request->get("answerId");
             $tokenUser = $request->get("tokenUser");
 
+            var_dump($now);
+            var_dump($time);
+
             if($now - $time > 30) {
                 $response["message"] = "Timeout: Tiempo de espera agotado";
                 return $response;
@@ -54,6 +57,7 @@ class ApiController extends Controller
 
             $question_start = Carbon::createFromFormat("Y-m-d H:m:s", $question->time_ini)->timestamp;
             $question_end = $question_start + $question->duration;
+
 
             if($time < $question_start) {
                 $response["message"] = "Pregunta no iniciada";
