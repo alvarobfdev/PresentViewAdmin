@@ -11,6 +11,7 @@ use App\AnswersModel;
 use App\Http\UsersAppModel;
 use App\QuestionsModel;
 use App\Revision;
+use App\UserAnswerModel;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,70 @@ use Mockery\CountValidator\Exception;
 class ApiController extends Controller
 {
 
+
+    public function postSendAnswer(Request $request) {
+        $now = time();
+        $response["status"] = 1;
+        $response["answerRegistered"] = false;
+        try {
+            $time = $request->get("time");
+            $answerId = $request->get("answerId");
+            $tokenUser = $request->get("tokenUser");
+
+            if($now - $time > 30) {
+                $response["message"] = "Timeout: Tiempo de espera agotado";
+                return $response;
+            }
+
+            $user = UsersAppModel::where("token", $tokenUser)->first();
+
+            if(!$user) {
+                $response["message"] = "Usuario incorrecto";
+                return $response;
+            }
+
+            $answer = AnswersModel::where("id", $answerId)->first();
+
+            if(!$answer) {
+                $response["message"] = "Respuesta incorrecta";
+                return $response;
+            }
+
+            $question = QuestionsModel::where("id", $answer->question_id)->first();
+
+            $question_start = Carbon::createFromFormat("Y-m-d H:m:s", $question->time_ini)->timestamp;
+            $question_end = $question_start + $question->duration;
+
+            if($time < $question_start) {
+                $response["message"] = "Pregunta no iniciada";
+                return $response;
+            }
+
+            if($time > $question_end) {
+                $response["message"] = "Pregunta finalizada";
+                return $response;
+            }
+
+            $userAnswer = new UserAnswerModel();
+            $userAnswer->question_id = $question->id;
+            $userAnswer->answer_id = $answerId;
+            $userAnswer->question_title = $question->title;
+            $userAnswer->answer_title = $answer->title;
+            $userAnswer->user_id = $user->id;
+            $userAnswer->save();
+
+            $response["answerRegistered"] = true;
+            $response["user_answer"] = $userAnswer;
+
+            return $response;
+
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+     }
     public function getGetImage($imageName) {
         $answer = AnswersModel::where("img_id", $imageName)->first();
         if(!$answer) {
