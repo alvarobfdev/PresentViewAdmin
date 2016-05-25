@@ -7,6 +7,7 @@
  */
 
 namespace App\Http\Controllers;
+use App\AnswersModel;
 use App\Http\UsersAppModel;
 use App\QuestionsModel;
 use App\Revision;
@@ -20,7 +21,11 @@ class ApiController extends Controller
 {
 
     public function postGetImage($imageName) {
-        dd($imageName);
+        $answer = AnswersModel::where("img_id", $imageName)->first();
+        if(!$answer) {
+            abort(401);
+        }
+        return \Image::make(storage_path() . '/app/answers_images/' . $answer->img_saved_name)->response();
     }
 
     public function postGetRevision() {
