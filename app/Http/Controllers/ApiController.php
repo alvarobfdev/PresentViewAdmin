@@ -53,7 +53,6 @@ class ApiController extends Controller
                     ->where('time_ini', '>', $timeMinus);
             })->get();
             $questions->load('answers');
-            dd($questions->toJSON());
 
             $result["questions"] = $questions;
             return json_encode($result);
