@@ -70,6 +70,8 @@ class ApiController extends Controller
             $userAnswer = new UserAnswerModel();
             $userAnswer->question_id = $question->id;
             $userAnswer->answer_id = $answerId;
+            $userAnswer->question_title = $question->title;
+            $userAnswer->answer_title = $answer->title;
             $userAnswer->user_id = $user->id;
             $userAnswer->save();
 
