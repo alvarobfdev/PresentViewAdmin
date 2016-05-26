@@ -30,7 +30,7 @@ class ApiController extends Controller
             $time = $request->get("time");
             $answerId = $request->get("answerId");
             $tokenUser = $request->get("tokenUser");
-
+            dd($request->all());
             var_dump($now);
             var_dump($time);
 
