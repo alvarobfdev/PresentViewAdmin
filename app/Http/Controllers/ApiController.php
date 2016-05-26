@@ -121,7 +121,19 @@ class ApiController extends Controller
             })->get();
             $questions->load('answers');
 
+            foreach($questions as &$question) {
+                if($question->isFinished()) {
+                    $question->finished = true;
+                }
+                foreach($question->answers as &$answer) {
+                    $answer->percentage = $answer->getPercentage();
+                }
+            }
+
             $result["questions"] = $questions;
+
+
+
             return json_encode($result);
         }
         catch(\Exception $e) {
