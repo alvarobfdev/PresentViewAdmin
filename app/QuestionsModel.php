@@ -21,7 +21,8 @@ class QuestionsModel extends Model
     }
 
     public function isFinished() {
-        $time_end = Carbon::createFromFormat("Y-m-d H:i:s", $this->time_end, 'Europe/Madrid')->timestamp;
+        $time_ini = Carbon::createFromFormat("Y-m-d H:i:s", $this->time_ini, 'Europe/Madrid')->timestamp;
+        $time_end = $time_ini + $this->duration;
         return time() > $time_end;
     }
 }
