@@ -20,7 +20,9 @@ class AnswersModel extends Model
         $totalThisAnswer = UserAnswerModel::where("question_id", $this->question_id)
             ->where("answer_id", $this->id)->count();
 
-        return number_format((float)(($totalThisAnswer/$totalAnswers)*100), 2, '.', '');
+        if($totalAnswers > 0)
+            return number_format((float)(($totalThisAnswer/$totalAnswers)*100), 2, '.', '');
+        else return 0.00;
 
     }
 
