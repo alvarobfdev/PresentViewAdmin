@@ -53,13 +53,9 @@ class ApiController extends Controller
 
             $question = QuestionsModel::where("id", $answer->question_id)->first();
 
-            $question_start = Carbon::createFromFormat("Y-m-d H:m:s", $question->time_ini, 'Europe/Madrid')->timestamp;
+            $question_start = Carbon::createFromFormat("Y-m-d H:i:s", $question->time_ini, 'Europe/Madrid')->timestamp;
 
             $question_end = $question_start + $question->duration;
-
-            var_dump($question_start);
-            var_dump($time);
-
 
             if($time < $question_start) {
                 $response["message"] = "Pregunta no iniciada";
@@ -143,7 +139,7 @@ class ApiController extends Controller
                 abort(401);
             }
             $now = time();
-            $now = Carbon::createFromTimestamp($now)->format("Y-m-d H:m:s");
+            $now = Carbon::createFromTimestamp($now)->format("Y-m-d H:i:s");
             return QuestionsModel::where("time_ini", ">", $now)->get()->toJson();
         }
         catch(\Exception $e) {
