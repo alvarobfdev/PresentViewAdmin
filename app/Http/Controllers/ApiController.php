@@ -57,7 +57,8 @@ class ApiController extends Controller
 
             $question_end = $question_start + $question->duration;
 
-            dd($question_start);
+            var_dump($question_start);
+            var_dump($time);
 
 
             if($time < $question_start) {
