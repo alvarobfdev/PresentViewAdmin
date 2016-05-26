@@ -76,7 +76,6 @@ class Kernel extends ConsoleKernel
         }
 
         if($sleepTime) {
-            dd($sleepTime);
             sleep($sleepTime);
             $this->controlFinishedQuestions($sleepQuestion, $oneMinuteLess, $oneMinuteMore);
         }
