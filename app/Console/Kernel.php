@@ -41,6 +41,8 @@ class Kernel extends ConsoleKernel
 
         }
 
+        dd("here");
+
         $now = time();
         if(!$oneMinuteLess)
             $oneMinuteLess = Carbon::parse($now-60)->format('Y-m-d H:i:s');
