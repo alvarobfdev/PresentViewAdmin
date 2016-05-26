@@ -44,11 +44,10 @@ class Kernel extends ConsoleKernel
 
 
         $now = time();
-        dd("HERE");
         if(!$oneMinuteLess)
-            $oneMinuteLess = Carbon::parse($now-60, 'Europe/Madrid')->format('Y-m-d H:i:s');
+            $oneMinuteLess = Carbon::createFromTimestamp($now-60, 'Europe/Madrid')->format('Y-m-d H:i:s');
         if(!$oneMinuteMore)
-            $oneMinuteMore = Carbon::parse($now+60, 'Europe/Madrid')->format('Y-m-d H:i:s');
+            $oneMinuteMore = Carbon::createFromTimestamp($now+60, 'Europe/Madrid')->format('Y-m-d H:i:s');
 
         $questions = QuestionsModel::where("time_ini", ">=", $oneMinuteLess)
             ->where("time_ini", "<=", $oneMinuteMore)
