@@ -53,12 +53,11 @@ class Kernel extends ConsoleKernel
             ->where("time_ini", "<=", $oneMinuteMore)
             ->where("finished", 0)
             ->get();
-        dd($oneMinuteLess);
-        
+
         $sleepTime = null;
         $sleepQuestion = null;
         foreach($questions as $question) {
-            $time_ini = Carbon::createFromFormat('Y-m-d H:i:s', $question->time_ini)->timestamp;
+            $time_ini = Carbon::createFromFormat('Y-m-d H:i:s', $question->time_ini, 'Europe/Madrid')->timestamp;
             $time_end = $time_ini + $question->duration;
 
 
@@ -77,6 +76,7 @@ class Kernel extends ConsoleKernel
         }
 
         if($sleepTime) {
+            dd($sleepTime);
             sleep($sleepTime);
             $this->controlFinishedQuestions($sleepQuestion, $oneMinuteLess, $oneMinuteMore);
         }
