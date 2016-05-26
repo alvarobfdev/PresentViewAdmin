@@ -45,18 +45,16 @@ class Kernel extends ConsoleKernel
 
         $now = time();
         if(!$oneMinuteLess)
-            $oneMinuteLess = Carbon::createFromTimestamp($now-60, 'Europe/Madrid')->format('Y-m-d H:i:s');
+            $oneMinuteLess = Carbon::createFromTimestamp($now-65, 'Europe/Madrid')->format('Y-m-d H:i:s');
         if(!$oneMinuteMore)
-            $oneMinuteMore = Carbon::createFromTimestamp($now+60, 'Europe/Madrid')->format('Y-m-d H:i:s');
+            $oneMinuteMore = Carbon::createFromTimestamp($now+65, 'Europe/Madrid')->format('Y-m-d H:i:s');
 
-        dd($oneMinuteLess);
         $questions = QuestionsModel::where("time_ini", ">=", $oneMinuteLess)
             ->where("time_ini", "<=", $oneMinuteMore)
             ->where("finished", 0)
             ->get();
 
         $sleepTime = null;
-        $sleepQuestion = null;
         foreach($questions as $question) {
             $time_ini = Carbon::createFromFormat('Y-m-d H:i:s', $question->time_ini, 'Europe/Madrid')->timestamp;
             $time_end = $time_ini + $question->duration;
