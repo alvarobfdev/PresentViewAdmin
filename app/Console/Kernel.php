@@ -53,7 +53,7 @@ class Kernel extends ConsoleKernel
             ->where("time_ini", "<=", $oneMinuteMore)
             ->where("finished", 0)
             ->get();
-
+        dd($oneMinuteLess);
         $sleepTime = null;
         $sleepQuestion = null;
         foreach($questions as $question) {
@@ -76,7 +76,6 @@ class Kernel extends ConsoleKernel
         }
 
         if($sleepTime) {
-            dd($sleepTime);
             sleep($sleepTime);
             $this->controlFinishedQuestions($sleepQuestion, $oneMinuteLess, $oneMinuteMore);
         }
