@@ -62,7 +62,7 @@ class Kernel extends ConsoleKernel
 
 
             if($time_end > time()) {
-                $sleep = time() - $time_end;
+                $sleep = $time_end - time();
                 if(!$sleepTime || $sleepTime < $sleep) {
                     $sleepTime = $sleep;
                     $sleepQuestion = $question;
