@@ -57,6 +57,8 @@ class ApiController extends Controller
 
             $question_end = $question_start + $question->duration;
 
+            dd($question_start);
+
 
             if($time < $question_start) {
                 $response["message"] = "Pregunta no iniciada";
