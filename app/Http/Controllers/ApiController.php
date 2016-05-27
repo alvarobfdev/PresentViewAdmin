@@ -29,7 +29,7 @@ class ApiController extends Controller
 
             $tokenUser = $request->get("userToken");
             $user = UsersAppModel::where("token", $tokenUser)->first();
-
+            dd($user);
             if(!$user) {
                 $response["message"] = "Usuario incorrecto";
                 return $response;
