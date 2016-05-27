@@ -60,8 +60,8 @@ class ApiController extends Controller
         count(*), (SELECT GROUP_CONCAT(numquestions) FROM (SELECT count(*) as numquestions FROM app_answers GROUP BY user_id ORDER BY numquestions DESC) q)) as position FROM app_answers WHERE user_id=".$user->id." GROUP BY user_id"
                 );
 
-                $user["me"] = true;
-                $response["rankings"][] = $user;
+                $user[0]["me"] = true;
+                $response["rankings"][] = $user[0];
             }
             $response["status"] = 1;
 
