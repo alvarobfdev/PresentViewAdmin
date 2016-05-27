@@ -337,6 +337,12 @@ class ApiController extends Controller
     }
 
 
+    public function getAddRandomUsers() {
+        $json = file_get_contents('http://api.randomuser.me/?nat=es');
+        $json = json_decode($json);
+        dd($json);
+    }
+
 
 
 }
