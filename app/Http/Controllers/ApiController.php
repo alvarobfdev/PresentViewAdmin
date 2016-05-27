@@ -33,7 +33,7 @@ class ApiController extends Controller
                 return $response;
             }
 
-            $ranking = UserAnswerModel::select(\DB::raw('count(*) as questions, user_id'))
+            $ranking = UserAnswerModel::select(\DB::raw('count(*) as numQuestions, user_id'))
                 ->groupBy('user_id')
                 ->orderBy('questions', 'desc')
                 ->take(10)
@@ -47,6 +47,9 @@ class ApiController extends Controller
             $meInArray = false;
             $i = 1;
             foreach($response["rankings"] as &$ranking) {
+                if($ranking["user"])
+                    $ranking["user"] = substr($ranking["user"]["name"], 0, 3).substr($ranking["user"]["surname"], -3);
+
                 $ranking["position"] = $i;
                 $i++;
                 if($ranking["user_id"] == $user->id) {
