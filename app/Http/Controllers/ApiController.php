@@ -360,7 +360,7 @@ class ApiController extends Controller
             $idprov = $jsonMunicipios[$rand]["CPRO"];
 
             $user->provincia = $idprov;
-            $user->municipio = $idmun;
+            $user->ciudad = $idmun;
 
             $intDate= rand(-1073001600,1073260800);
 
