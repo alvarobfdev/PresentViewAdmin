@@ -35,7 +35,7 @@ class ApiController extends Controller
 
             $ranking = UserAnswerModel::select(\DB::raw('count(*) as numQuestions, user_id'))
                 ->groupBy('user_id')
-                ->orderBy('questions', 'desc')
+                ->orderBy('numQuestions', 'desc')
                 ->take(10)
                 ->get();
 
