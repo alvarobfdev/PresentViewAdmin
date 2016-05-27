@@ -59,7 +59,7 @@ class ApiController extends Controller
 	FIND_IN_SET(
         count(*), (SELECT GROUP_CONCAT(numquestions) FROM (SELECT count(*) as numquestions FROM app_answers GROUP BY user_id ORDER BY numquestions DESC) q)) as position FROM app_answers WHERE user_id=".$user->id." GROUP BY user_id"
                 );
-                $user = $user->toArray();
+                dd($user);
                 if(count($user)>0) {
                     $user[0]["me"] = true;
                     $response["rankings"][] = $user[0];
