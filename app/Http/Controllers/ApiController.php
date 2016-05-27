@@ -22,6 +22,52 @@ class ApiController extends Controller
 {
 
 
+    public function postRanking(Request $request) {
+        $response["status"] = 0;
+
+        try {
+
+            $tokenUser = $request->get("tokenUser");
+            $user = UsersAppModel::where("token", $tokenUser)->first();
+
+            if(!$user) {
+                $response["message"] = "Usuario incorrecto";
+                return $response;
+            }
+
+            $ranking = UserAnswerModel::select(\DB::raw('count(*) as questions, user_id'))
+                ->groupBy('user_id')
+                ->orderBy('questions', 'desc')
+                ->get();
+
+            $result["rankings"] = $ranking->toArray();
+
+            $meInArray = false;
+            foreach($result["rankings"] as &$ranking) {
+                if($ranking["user_id"] == $user->id) {
+                    $ranking["me"] = true;
+                    $meInArray = true;
+                }
+            }
+
+            if(!$meInArray) {
+                $rankingMe = UserAnswerModel::select(\DB::raw('count(*) as questions, user_id'))
+                    ->groupBy('user_id')
+                    ->where("user_id", $user->id)
+                    ->first();
+
+                $result["rankings"][] = $rankingMe->toArray();
+            }
+
+            return $result;
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+    }
+
     public function postSendAnswer(Request $request) {
         $now = time();
         $response["status"] = 1;
