@@ -62,9 +62,9 @@ class ApiController extends Controller
             if(!$meInArray) {
 
                 $userAns = \DB::select(
-                    "SELECT user_id, count(*) as questions,
+                    "SELECT user_id, count(*) as numquestions,
 	FIND_IN_SET(
-        count(*), (SELECT GROUP_CONCAT(numquestions) FROM (SELECT count(*) as numquestions FROM app_answers GROUP BY user_id ORDER BY numquestions DESC) q)) as position FROM app_answers WHERE user_id=".$user->id." GROUP BY user_id"
+        count(*), (SELECT GROUP_CONCAT(questions) FROM (SELECT count(*) as questions FROM app_answers GROUP BY user_id ORDER BY questions DESC) q)) as position FROM app_answers WHERE user_id=".$user->id." GROUP BY user_id"
                 );
                 if(count($userAns)>0) {
                     $userAns[0]->me = true;
