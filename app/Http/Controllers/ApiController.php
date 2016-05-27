@@ -39,6 +39,9 @@ class ApiController extends Controller
                 ->take(10)
                 ->get();
 
+            $ranking->load("user");
+
+
             $response["rankings"] = $ranking->toArray();
 
             $meInArray = false;
