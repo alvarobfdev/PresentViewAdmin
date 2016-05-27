@@ -26,7 +26,6 @@ class ApiController extends Controller
         $response["status"] = 0;
 
         try {
-            dd($request->all());
             $tokenUser = $request->get("userToken");
             $user = UsersAppModel::where("token", $tokenUser)->first();
             if(!$user) {
