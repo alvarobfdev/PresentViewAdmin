@@ -337,8 +337,8 @@ class ApiController extends Controller
     }
 
 
-    public function getAddRandomUsers() {
-        $json = file_get_contents('http://api.randomuser.me/?nat=es&results=1');
+    public function getAddRandomUsers($result) {
+        $json = file_get_contents('http://api.randomuser.me/?nat=es&results='.$result);
         $json = json_decode($json);
 
         $jsonMunicipios = file_get_contents("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/codmun.json");
