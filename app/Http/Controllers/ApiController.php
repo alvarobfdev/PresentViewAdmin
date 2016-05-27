@@ -61,7 +61,7 @@ class ApiController extends Controller
                 );
 
 
-                $response["rankings"][] = $user->toArray();
+                $response["rankings"][] = $user;
             }
             $response["status"] = 1;
 
