@@ -61,7 +61,7 @@ class ApiController extends Controller
                 );
                 dd($user);
                 if(count($user)>0) {
-                    $user[0]["me"] = true;
+                    $user[0]->me = true;
                     $response["rankings"][] = $user[0];
                 }
             }
