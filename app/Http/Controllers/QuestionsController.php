@@ -133,7 +133,7 @@ class QuestionsController extends Controller
         foreach($users as $user) {
             $answer = new UserAnswerModel();
 
-            $answers = $question->answers()->toArray();
+            $answers = $question->answers()->get()->toArray();
 
             $randAnswer = rand(0, count($answers)-1);
 
