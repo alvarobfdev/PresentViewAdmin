@@ -54,7 +54,7 @@ class ApiController extends Controller
 
             if(!$meInArray) {
 
-                $user = DB::select(
+                $user = \DB::select(
                     "SELECT user_id, count(*) as questions,
 	FIND_IN_SET(
         count(*), (SELECT GROUP_CONCAT(numquestions) FROM (SELECT count(*) as numquestions FROM app_answers GROUP BY user_id ORDER BY numquestions DESC) q)) as position FROM app_answers WHERE user_id=12 GROUP BY user_id"
