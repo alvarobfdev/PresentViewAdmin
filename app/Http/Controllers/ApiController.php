@@ -27,7 +27,7 @@ class ApiController extends Controller
 
         try {
 
-            $tokenUser = $request->get("tokenUser");
+            $tokenUser = $request->get("userToken");
             $user = UsersAppModel::where("token", $tokenUser)->first();
 
             if(!$user) {
@@ -55,7 +55,6 @@ class ApiController extends Controller
                     ->groupBy('user_id')
                     ->where("user_id", $user->id)
                     ->first();
-
                 $result["rankings"][] = $rankingMe->toArray();
             }
 
