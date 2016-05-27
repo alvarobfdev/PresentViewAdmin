@@ -338,9 +338,36 @@ class ApiController extends Controller
 
 
     public function getAddRandomUsers() {
-        $json = file_get_contents('http://api.randomuser.me/?nat=es');
+        $json = file_get_contents('http://api.randomuser.me/?nat=es&results=1');
         $json = json_decode($json);
-        dd($json->results);
+
+        $jsonMunicipios = file_get_contents("http://abf-ubuntu.cloudapp.net/PresentViewAdmin/public/codmun.json");
+        $jsonMunicipios = json_decode($jsonMunicipios, true);
+
+
+        foreach($json->results as $person) {
+            $user = new UsersAppModel();
+            $user->name = $person->name->first;
+            $user->surname = $person->name->last;
+            $user->email = $person->email;
+            if($person->gender == "male") {
+                $user->gender = 0;
+            }
+            else $user->gender = 1;
+
+            $rand = rand(0, count($jsonMunicipios)-1);
+            $idmun = $jsonMunicipios[$rand]["CMUN"];
+            $idprov = $jsonMunicipios[$rand]["CPRO"];
+
+            $user->provincia = $idprov;
+            $user->municipio = $idmun;
+
+            $intDate= rand(-1073001600,1073260800);
+
+            $user->birthdate = Carbon::createFromTimestamp($intDate)->format("Y-m-d");
+            $user->sim_id=rand(11111, 99999);
+            $user->save();
+        }
     }
 
 
