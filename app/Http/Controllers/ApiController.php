@@ -36,6 +36,7 @@ class ApiController extends Controller
             $ranking = UserAnswerModel::select(\DB::raw('count(*) as questions, user_id'))
                 ->groupBy('user_id')
                 ->orderBy('questions', 'desc')
+                ->take(10)
                 ->get();
 
             $response["rankings"] = $ranking->toArray();
