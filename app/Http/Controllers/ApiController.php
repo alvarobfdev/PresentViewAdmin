@@ -29,7 +29,6 @@ class ApiController extends Controller
             dd($request->all());
             $tokenUser = $request->get("userToken");
             $user = UsersAppModel::where("token", $tokenUser)->first();
-            dd($user);
             if(!$user) {
                 $response["message"] = "Usuario incorrecto";
                 return $response;
@@ -59,7 +58,7 @@ class ApiController extends Controller
             }
             $response["status"] = 1;
 
-            return $result;
+            return $response;
         }
         catch(\Exception $e) {
             $response["status"] = 0;
