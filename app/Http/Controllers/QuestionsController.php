@@ -140,9 +140,9 @@ class QuestionsController extends Controller
             $selectedAnswer = $answers[$randAnswer];
 
             $answer->question_id = $question->id;
-            $answer->answer_id = $selectedAnswer->id;
+            $answer->answer_id = $selectedAnswer["id"];
             $answer->question_title = $question->title;
-            $answer->answer_title = $selectedAnswer->title;
+            $answer->answer_title = $selectedAnswer["title"];
             $answer->user_id = $user->id;
 
             $answer->save();
