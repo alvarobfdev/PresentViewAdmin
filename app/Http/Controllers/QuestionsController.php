@@ -10,8 +10,10 @@ namespace App\Http\Controllers;
 
 
 use App\AnswersModel;
+use App\Http\UsersAppModel;
 use App\QuestionsModel;
 use App\Revision;
+use App\UserAnswerModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -107,6 +109,10 @@ class QuestionsController extends Controller
 
         $result = Revision::updateRevision();
 
+
+        //RANDOM QUESTIONS ANSWERS
+        $this->randomAnswers($question);
+
         if($result != "success") {
             $question->delete();
             return redirect('questions/add')
@@ -119,6 +125,29 @@ class QuestionsController extends Controller
 
 
 
+    }
+
+
+    private function randomAnswers(QuestionsModel $question) {
+        $users = UsersAppModel::orderByRaw('RAND()')->take(100)->get();
+        foreach($users as $user) {
+            $answer = new UserAnswerModel();
+
+            $answers = $question->answers()->toArray();
+
+            $randAnswer = rand(0, count($answers)-1);
+
+            $selectedAnswer = $answers[$randAnswer];
+
+            $answer->question_id = $question->id;
+            $answer->answer_id = $selectedAnswer->id;
+            $answer->question_title = $question->title;
+            $answer->answer_title = $selectedAnswer->title;
+            $answer->user_id = $user->id;
+
+            $answer->save();
+
+        }
     }
 
 
