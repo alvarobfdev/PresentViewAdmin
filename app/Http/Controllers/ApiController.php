@@ -40,10 +40,10 @@ class ApiController extends Controller
                 ->orderBy('questions', 'desc')
                 ->get();
 
-            $result["rankings"] = $ranking->toArray();
+            $response["rankings"] = $ranking->toArray();
 
             $meInArray = false;
-            foreach($result["rankings"] as &$ranking) {
+            foreach($response["rankings"] as &$ranking) {
                 if($ranking["user_id"] == $user->id) {
                     $ranking["me"] = true;
                     $meInArray = true;
@@ -55,8 +55,9 @@ class ApiController extends Controller
                     ->groupBy('user_id')
                     ->where("user_id", $user->id)
                     ->first();
-                $result["rankings"][] = $rankingMe->toArray();
+                $response["rankings"][] = $rankingMe->toArray();
             }
+            $response["status"] = 1;
 
             return $result;
         }
