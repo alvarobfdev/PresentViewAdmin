@@ -171,6 +171,12 @@ class ApiController extends Controller
     public function postGetNextQuestions(Request $request) {
         $response["status"] = 1;
         try {
+            $user = UsersAppModel::where("token", $request->get("token"))->first();
+            if(!$user) {
+                $response["status"] = 0;
+                $response["message"] = "Usario incorrecto!";
+                return $response;
+            }
             $now = time();
             $timeMinus = $now - 120;
             $now = Carbon::createFromTimestamp($now, 'Europe/Madrid')->toDateTimeString();
@@ -179,7 +185,8 @@ class ApiController extends Controller
             {
                 $query->where('time_ini', '<', $now)
                     ->where('time_ini', '>', $timeMinus);
-            })->get();
+            })->orWhere("winner_user_id", $user->id)
+                ->get();
             $questions->load('answers');
 
             foreach($questions as &$question) {
