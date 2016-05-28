@@ -35,10 +35,8 @@ class Kernel extends ConsoleKernel
     protected function controlFinishedQuestions($sleepQuestion = null, $oneMinuteLess=null, $oneMinuteMore=null) {
 
         if($sleepQuestion) {
-            $sleepQuestion->finished = 1;
-            $this->addWinner($sleepQuestion->id);
-            $sleepQuestion->save();
-            Revision::updateRevision();
+            $this->finishQuestion($sleepQuestion);
+
 
         }
 
@@ -69,10 +67,7 @@ class Kernel extends ConsoleKernel
                 }
             }
             else {
-                $question->finished = 1;
-                $this->addWinner($sleepQuestion->id);
-                $question->save();
-                Revision::updateRevision();
+                $this->finishQuestion($question);
             }
         }
 
@@ -98,5 +93,39 @@ class Kernel extends ConsoleKernel
                 $question->save();
             }
         }
+    }
+
+    private function randomAnswers(QuestionsModel $question) {
+        $users = UsersAppModel::whereNull("token")->orderByRaw('RAND()')->take(100)->get();
+        foreach($users as $user) {
+            $answer = new UserAnswerModel();
+
+            $answers = $question->answers()->get()->toArray();
+
+            $randAnswer = rand(0, count($answers)-1);
+
+            $selectedAnswer = $answers[$randAnswer];
+
+            $answer->question_id = $question->id;
+            $answer->answer_id = $selectedAnswer["id"];
+            $answer->question_title = $question->title;
+            $answer->answer_title = $selectedAnswer["title"];
+            $answer->user_id = $user->id;
+
+            $answer->save();
+
+        }
+    }
+
+    /**
+     * @param $sleepQuestion
+     */
+    protected function finishQuestion($sleepQuestion)
+    {
+        $sleepQuestion->finished = 1;
+        $this->addWinner($sleepQuestion->id);
+        //$this->randomAnswers($sleepQuestion);
+        $sleepQuestion->save();
+        Revision::updateRevision();
     }
 }
