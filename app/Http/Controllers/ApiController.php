@@ -79,7 +79,7 @@ class ApiController extends Controller
                 'charset' => 'utf-8'
             );
 
-            //return response()->json($response , 200, $header, JSON_UNESCAPED_UNICODE);
+            return response()->json($response , 200, $header, JSON_UNESCAPED_UNICODE);
         }
         catch(\Exception $e) {
             $response["status"] = 0;
