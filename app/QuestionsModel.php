@@ -25,7 +25,7 @@ class QuestionsModel extends Model
     }
 
     public function winnerUser() {
-        return $this->hasOne('App\Http\UsersAppModel', 'winner_user_id');
+        return $this->belongsTo('App\Http\UsersAppModel', 'winner_user_id');
 
     }
 
