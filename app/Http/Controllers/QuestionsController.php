@@ -115,10 +115,6 @@ class QuestionsController extends Controller
 
         $result = Revision::updateRevision();
 
-
-        //RANDOM QUESTIONS ANSWERS
-        //$this->randomAnswers($question);
-
         if($result != "success") {
             $question->delete();
             return redirect('questions/add')
