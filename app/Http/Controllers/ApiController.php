@@ -44,7 +44,7 @@ class ApiController extends Controller
 
             $response["rankings"] = $ranking->toArray();
 
-            $meInArray = false;
+            $meInArray = "false";
             $i = 1;
             foreach($response["rankings"] as &$ranking) {
                 if($ranking["user"])
@@ -54,8 +54,8 @@ class ApiController extends Controller
                 $ranking["position"] = $i;
                 $i++;
                 if($ranking["user_id"] == $user->id) {
-                    $ranking["me"] = true;
-                    $meInArray = true;
+                    $ranking["me"] = "true";
+                    $meInArray = "true";
                 }
             }
 
@@ -67,7 +67,7 @@ class ApiController extends Controller
         count(*), (SELECT GROUP_CONCAT(questions) FROM (SELECT count(*) as questions FROM app_answers GROUP BY user_id ORDER BY questions DESC) q)) as position FROM app_answers WHERE user_id=".$user->id." GROUP BY user_id"
                 );
                 if(count($userAns)>0) {
-                    $userAns[0]->me = true;
+                    $userAns[0]->me = "true";
                     $userAns[0]->user = substr($user->name, 0, 3).substr($user->surname, -3);
                     $response["rankings"][] = $userAns[0];
                 }
@@ -79,7 +79,7 @@ class ApiController extends Controller
                 'charset' => 'utf-8'
             );
 
-            return response()->json($response , 200, $header, JSON_UNESCAPED_UNICODE);
+            return $response;
         }
         catch(\Exception $e) {
             $response["status"] = 0;
