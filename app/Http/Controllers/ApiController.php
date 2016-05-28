@@ -73,7 +73,6 @@ class ApiController extends Controller
                 }
             }
             $response["status"] = 1;
-            dd($response);
             return $response;
         }
         catch(\Exception $e) {
