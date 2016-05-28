@@ -49,6 +49,16 @@
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <label>Premio</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <input type="checkbox" name="activatePrize">
+                                </span>
+                                <input type="text" class="form-control" name="prizeTitle">
+                            </div>
+                        </div>
+
                         <h3 class="page-header">Posibles respuestas</h3>
 
                         <div class="row" id="answersForm">
