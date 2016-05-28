@@ -2,8 +2,10 @@
 
 namespace App\Console;
 
+use App\Http\UsersAppModel;
 use App\QuestionsModel;
 use App\Revision;
+use App\UserAnswerModel;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
