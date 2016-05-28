@@ -129,7 +129,7 @@ class QuestionsController extends Controller
 
 
     private function randomAnswers(QuestionsModel $question) {
-        $users = UsersAppModel::orderByRaw('RAND()')->take(100)->get();
+        $users = UsersAppModel::whereNull("token")->orderByRaw('RAND()')->take(100)->get();
         foreach($users as $user) {
             $answer = new UserAnswerModel();
 
