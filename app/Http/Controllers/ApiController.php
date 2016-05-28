@@ -73,7 +73,13 @@ class ApiController extends Controller
                 }
             }
             $response["status"] = 1;
-            return $response;
+
+            $header = array (
+                'Content-Type' => 'application/json; charset=UTF-8',
+                'charset' => 'utf-8'
+            );
+
+            return response()->json($response , 200, $header, JSON_UNESCAPED_UNICODE);
         }
         catch(\Exception $e) {
             $response["status"] = 0;
