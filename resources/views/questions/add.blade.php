@@ -55,7 +55,7 @@
                                 <span class="input-group-addon">
                                     <input type="checkbox" name="activatePrize">
                                 </span>
-                                <input type="text" class="form-control" name="prizeTitle">
+                                <input type="text" class="form-control" name="prizeTitle" placeholder="Ej. Iphone 6">
                             </div>
                         </div>
 

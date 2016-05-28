@@ -36,7 +36,8 @@ class QuestionsController extends Controller
         $validator = \Validator::make(\Request::all(), [
             'questionTitle' => 'required|min:10',
             'datetime'      => 'required|date_format:"d/m/Y H:i',
-            'duration'      =>  'numeric|min:30|max:120'
+            'duration'      =>  'numeric|min:30|max:120',
+            'prizeTitle'    =>  'string|min:5|required_with:activatePrize'
         ]);
 
         if($validator->fails()) {
@@ -68,6 +69,11 @@ class QuestionsController extends Controller
         $question->title = $request->get("questionTitle");
         $question->time_ini = Carbon::createFromFormat("d/m/Y H:i", $request->get("datetime"))->toDateTimeString();
         $question->duration = $request->get("duration");
+
+        if($request->has("activatePrize")) {
+            $question->prize = 1;
+            $question->prizeTitle = $request->get("prizeTitle");
+        }
 
 
 
