@@ -48,7 +48,7 @@ class ApiController extends Controller
             $i = 1;
             foreach($response["rankings"] as &$ranking) {
                 if($ranking["user"])
-                    $ranking["user"] = substr($ranking["user"]["name"], 0, 3).substr($ranking["user"]["surname"], -4);
+                    $ranking["user"] = mb_substr($ranking["user"]["name"], 0, 3, 'UTF-8').mb_substr($ranking["user"]["surname"], -3, null, 'UTF-8');
                 else $ranking["user"] = "Desconocido";
 
                 $ranking["position"] = $i;
