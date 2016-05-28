@@ -72,7 +72,7 @@ class QuestionsController extends Controller
 
         if($request->has("activatePrize")) {
             $question->prize = 1;
-            $question->prizeTitle = $request->get("prizeTitle");
+            $question->prize_title = $request->get("prizeTitle");
         }
 
 
