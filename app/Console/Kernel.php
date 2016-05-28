@@ -82,6 +82,7 @@ class Kernel extends ConsoleKernel
         $question = QuestionsModel::where("id", $question_id)->first();
         if($question->prize == 1 && $question->winner == 0){
             $answers = $question->userAnswers()->get()->toArray();
+            dd($answers);
             if(count($answers) > 0) {
                 $winnerPosition = rand(0, count($answers)-1);
                 $winner = $answers[$winnerPosition];
