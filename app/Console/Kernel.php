@@ -85,7 +85,6 @@ class Kernel extends ConsoleKernel
 
             if(count($answers) > 0) {
                 $winnerPosition = rand(0, count($answers)-1);
-                dd($winnerPosition);
                 $winner = $answers[$winnerPosition];
                 $question->winner = 1;
                 $question->winner_user_id = $winner["user_id"];
