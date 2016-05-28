@@ -260,7 +260,7 @@ class ApiController extends Controller
                 $response["registered"] = false;
                 return $response;
             }
-            $user->user_id = $user->id;
+
             if($user->google_id) {
                 $response["is_google_account"] = true;
                 return $response;
@@ -275,6 +275,9 @@ class ApiController extends Controller
 
             $response["user"] = $user;
             $user->save();
+
+            $user->user_id = $user->id;
+
             return $response;
 
             
@@ -311,12 +314,12 @@ class ApiController extends Controller
                 return $response;
             }
 
-            $user->user_id = $user->id;
 
             $response["registered"] = true;
             $user->token = sha1(uniqid());
             $user->save();
             $response["user"] = $user;
+            $user->user_id = $user->id;
 
             return $response;
 
@@ -349,7 +352,6 @@ class ApiController extends Controller
                 return $response;
             }
 
-            $user->user_id = $user->id;
 
             $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
 
