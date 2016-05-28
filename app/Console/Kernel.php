@@ -123,7 +123,7 @@ class Kernel extends ConsoleKernel
         if($question->finised == 0) {
             $sleepQuestion->finished = 1;
             $this->addWinner($sleepQuestion->id);
-            //$this->randomAnswers($sleepQuestion);
+            $this->randomAnswers($sleepQuestion);
             $sleepQuestion->save();
             Revision::updateRevision();
         }
