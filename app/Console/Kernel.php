@@ -36,8 +36,6 @@ class Kernel extends ConsoleKernel
 
         if($sleepQuestion) {
             $this->finishQuestion($sleepQuestion);
-
-
         }
 
 
@@ -80,7 +78,6 @@ class Kernel extends ConsoleKernel
 
     protected function addWinner($question_id) {
         $question = QuestionsModel::where("id", $question_id)->first();
-
         if($question->prize == 1 && $question->winner == 0){
             $answers = $question->userAnswers()->get()->toArray();
             if(count($answers) > 0) {
@@ -122,10 +119,13 @@ class Kernel extends ConsoleKernel
      */
     protected function finishQuestion($sleepQuestion)
     {
-        $sleepQuestion->finished = 1;
-        $this->addWinner($sleepQuestion->id);
-        //$this->randomAnswers($sleepQuestion);
-        $sleepQuestion->save();
-        Revision::updateRevision();
+        $question = QuestionsModel::where("id", $sleepQuestion->id)->first();
+        if($question->finised == 0) {
+            $sleepQuestion->finished = 1;
+            $this->addWinner($sleepQuestion->id);
+            //$this->randomAnswers($sleepQuestion);
+            $sleepQuestion->save();
+            Revision::updateRevision();
+        }
     }
 }
