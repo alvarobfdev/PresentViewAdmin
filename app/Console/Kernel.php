@@ -92,11 +92,9 @@ class Kernel extends ConsoleKernel
                 $winnerPosition = rand(0, count($answers)-1);
                 $winner = $answers[$winnerPosition];
                 $question->winner = 1;
-                $question->winner_user_id = $winner->user_id;
                 var_dump("HERE");
+                $question->winner_user_id = $winner->user_id;
                 $user = $question->winnerUser()->first();
-                var_dump("HERE 1");
-
                 $question->winner_name = $user->getShortUsername();
                 $question->save();
             }
