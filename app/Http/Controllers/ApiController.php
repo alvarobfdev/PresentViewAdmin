@@ -28,11 +28,12 @@ class ApiController extends Controller
         try {
             $tokenUser = $request->get("userToken");
             $user = UsersAppModel::where("token", $tokenUser)->first();
+
             if(!$user) {
                 $response["message"] = "Usuario incorrecto";
                 return $response;
             }
-
+            $user->user_id = $user->id;
             $ranking = UserAnswerModel::select(\DB::raw('count(*) as numQuestions, user_id'))
                 ->groupBy('user_id')
                 ->orderBy('numQuestions', 'desc')
@@ -103,7 +104,7 @@ class ApiController extends Controller
                 $response["message"] = "Usuario incorrecto";
                 return $response;
             }
-
+            $user->user_id = $user->id;
             $answer = AnswersModel::where("id", $answerId)->first();
 
             if(!$answer) {
@@ -215,6 +216,7 @@ class ApiController extends Controller
             if(!$user) {
                 abort(401);
             }
+            $user->user_id = $user->id;
             $now = time();
             $now = Carbon::createFromTimestamp($now)->format("Y-m-d H:i:s");
             return QuestionsModel::where("time_ini", ">", $now)->get()->toJson();
@@ -236,6 +238,7 @@ class ApiController extends Controller
             if($user) {
                 $response["isValidToken"] = true;
             }
+            $user->user_id = $user->id;
             return $response;
         }
         catch(\Exception $e) {
@@ -257,7 +260,7 @@ class ApiController extends Controller
                 $response["registered"] = false;
                 return $response;
             }
-
+            $user->user_id = $user->id;
             if($user->google_id) {
                 $response["is_google_account"] = true;
                 return $response;
@@ -269,6 +272,7 @@ class ApiController extends Controller
             }
 
             $user->token = sha1(uniqid());
+
             $response["user"] = $user;
             $user->save();
             return $response;
@@ -307,6 +311,7 @@ class ApiController extends Controller
                 return $response;
             }
 
+            $user->user_id = $user->id;
 
             $response["registered"] = true;
             $user->token = sha1(uniqid());
@@ -344,7 +349,7 @@ class ApiController extends Controller
                 return $response;
             }
 
-
+            $user->user_id = $user->id;
 
             $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
 
@@ -363,6 +368,7 @@ class ApiController extends Controller
                 throwException(new \Exception("User registration failed!", 1001));
             }
 
+            $userRegistrated->user_id = $userRegistrated->id;
             $response["user"] = $userRegistrated;
 
             return $response;

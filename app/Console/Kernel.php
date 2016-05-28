@@ -36,6 +36,7 @@ class Kernel extends ConsoleKernel
 
         if($sleepQuestion) {
             $sleepQuestion->finished = 1;
+            addWinner($sleepQuestion->id);
             $sleepQuestion->save();
             Revision::updateRevision();
 
@@ -69,6 +70,7 @@ class Kernel extends ConsoleKernel
             }
             else {
                 $question->finished = 1;
+                addWinner($sleepQuestion->id);
                 $question->save();
                 Revision::updateRevision();
             }
@@ -79,5 +81,22 @@ class Kernel extends ConsoleKernel
             $this->controlFinishedQuestions($sleepQuestion, $oneMinuteLess, $oneMinuteMore);
         }
 
+    }
+
+    protected function addWinner($question_id) {
+        $question = QuestionsModel::where("id", $question_id)->first();
+
+        if($question->prize == 1 && $question->winner == 0){
+            $answers = $question->userAnswers()->get()->toArray();
+            if(count($answers) > 0) {
+                $winnerPosition = rand(0, count($answers)-1);
+                $winner = $answers[$winnerPosition];
+                $question->winner = 1;
+                $question->winner_user_id = $winner->user_id;
+                $user = $question->winnerUser()->first();
+                $question->winner_name = $user->getShortUsername();
+                $question->save();
+            }
+        }
     }
 }

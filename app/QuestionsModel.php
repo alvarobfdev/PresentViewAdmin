@@ -20,6 +20,15 @@ class QuestionsModel extends Model
         return $this->hasMany('App\AnswersModel', 'question_id');
     }
 
+    public function userAnswers() {
+        return $this->hasMany('App\UserAnswerModel', 'question_id');
+    }
+
+    public function winnerUser() {
+        return $this->hasOne('App\Http\UsersAppModel', 'winner_user_id');
+
+    }
+
     public function isFinished() {
         $time_ini = Carbon::createFromFormat("Y-m-d H:i:s", $this->time_ini, 'Europe/Madrid')->timestamp;
         $time_end = $time_ini + $this->duration;
