@@ -188,6 +188,11 @@ class ApiController extends Controller
                 foreach($question->answers as &$answer) {
                     $answer->percentage = $answer->getPercentage();
                 }
+
+                if($question->prize == 1){
+                    $question->prize = true;
+                }
+                else $question->prize = false;
             }
 
             $result["questions"] = $questions;
