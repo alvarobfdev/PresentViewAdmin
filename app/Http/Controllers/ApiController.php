@@ -194,6 +194,11 @@ class ApiController extends Controller
                     $question->prize = true;
                 }
                 else $question->prize = false;
+
+                if($question->winner == 1){
+                    $question->winner = true;
+                }
+                else $question->winner = false;
             }
 
             $result["questions"] = $questions;
