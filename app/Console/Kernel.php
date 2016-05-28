@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
 
         if($sleepQuestion) {
             $sleepQuestion->finished = 1;
-            addWinner($sleepQuestion->id);
+            $this->addWinner($sleepQuestion->id);
             $sleepQuestion->save();
             Revision::updateRevision();
 
@@ -70,7 +70,7 @@ class Kernel extends ConsoleKernel
             }
             else {
                 $question->finished = 1;
-                addWinner($sleepQuestion->id);
+                $this->addWinner($sleepQuestion->id);
                 $question->save();
                 Revision::updateRevision();
             }
