@@ -22,6 +22,14 @@ use Illuminate\Support\Facades\Input;
 
 class QuestionsController extends Controller
 {
+
+    public static $time_ini;
+
+    public function __construct()
+    {
+        self::$time_ini = microtime(true);
+    }
+
     public function getIndex(Request $request) {
 
         $questions = QuestionsModel::orderBy('time_ini', 'desc')->get();
@@ -133,7 +141,6 @@ class QuestionsController extends Controller
 
     public function getView($questionId) {
 
-        $time_ini = microtime(true);
 
         $question = QuestionsModel::where("id", $questionId)->first();
         $answers = AnswersModel::where("question_id", $questionId)->get();
@@ -144,7 +151,7 @@ class QuestionsController extends Controller
         $datasets = [];
 
         $time_end = microtime(true);
-        echo "POINT TIME 1: ".($time_end-$time_ini) . "<br>";
+        echo "POINT TIME 1: ".($time_end-self::$time_ini) . "<br>";
 
         //GENERAL CHART
 
@@ -162,7 +169,7 @@ class QuestionsController extends Controller
 
 
         $time_end = microtime(true);
-        echo "POINT TIME 2: ".($time_end-$time_ini) . "<br>";
+        echo "POINT TIME 2: ".($time_end-self::$time_ini) . "<br>";
 
 
         //CHART PROVINCES
@@ -171,6 +178,8 @@ class QuestionsController extends Controller
         $dataProvincia->labels = [];
 
         $provinces = ProvincesModel::getProvinces();
+        $time_end = microtime(true);
+        echo "POINT TIME 2.1: ".($time_end-self::$time_ini) . "<br>";
         foreach($provinces as $province) {
             $dataProvincia->labels[] = $province->Name;
         }
@@ -189,7 +198,7 @@ class QuestionsController extends Controller
         }
 
         $time_end = microtime(true);
-        echo "POINT TIME 3: ".($time_end-$time_ini) . "<br>";
+        echo "POINT TIME 3: ".($time_end-self::$time_ini) . "<br>";
 
 
 
@@ -219,7 +228,7 @@ class QuestionsController extends Controller
         }
 
         $time_end = microtime(true);
-        echo "POINT TIME 4: ".($time_end-$time_ini) . "<br>";
+        echo "POINT TIME 4: ".($time_end-self::$time_ini) . "<br>";
 
 
 
