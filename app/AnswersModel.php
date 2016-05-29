@@ -27,7 +27,11 @@ class AnswersModel extends Model
 
 
 
-    public function getPercentage($answers_count) {
+
+    public function getPercentage($answers_count=null) {
+        if(!$answers_count) {
+            $answers_count = UserAnswerModel::where("question_id", $this->question_id)->count();
+        }
         $totalAnswers = $answers_count;
         $totalThisAnswer = UserAnswerModel::where("question_id", $this->question_id)
             ->where("answer_id", $this->id)->count();
