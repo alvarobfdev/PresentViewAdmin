@@ -65,9 +65,7 @@ class AnswersModel extends Model
 
     private function getPercentageProvince($answers, $answerId, $provinceId) {
        $totalAnswers = 0;
-       $answers->load("user");
-       $answers = $answers->toJSON();
-       $answers = json_decode($answers);
+
 
         $time_end = microtime(true);
         echo "POINT TIME 3.2: ".($time_end-QuestionsController::$time_ini) . "<br>";
@@ -95,9 +93,6 @@ class AnswersModel extends Model
         $dateMax = Carbon::create(($now->year)-$ageMin, $now->month, $now->day);
         $dateMin = Carbon::create(($now->year)-$ageMax, $now->month, $now->day);
 
-        $answers->load("user");
-        $answers = $answers->toJSON();
-        $answers = json_decode($answers);
 
         foreach($answers as $answer) {
 

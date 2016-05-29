@@ -148,6 +148,11 @@ class QuestionsController extends Controller
         $user_answers = UserAnswerModel::where("question_id", $questionId);
         $user_answers_count = $user_answers->count();
         $user_answers = $user_answers->get();
+
+        $user_answers->load("user");
+        $user_answers = $answers->toJSON();
+        $user_answers = json_decode($answers);
+
         $datasets = [];
 
         $time_end = microtime(true);
