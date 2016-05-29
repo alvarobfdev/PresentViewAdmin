@@ -3,11 +3,7 @@
 @section('styles')
     @parent
     <link rel="stylesheet" href="{{asset('/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css')}}">
-    <style>
-        td {
-            cursor: pointer;
-        }
-    </style>
+
 @endsection
 
 @section('title', 'Listado Preguntas')
@@ -39,6 +35,7 @@
                                 <th>Título</th>
                                 <th>Fecha de lanzamiento (UTC)</th>
                                 <th>Duración</th>
+                                <th>Acciones</th>
                             </tr>
 
                         </thead>
@@ -56,6 +53,15 @@
                                 </td>
                                 <td>
                                     {{$question->duration}}s
+                                </td>
+                                <td>
+                                    <a href="{{url('/questions/view/'.$question->id)}}" class="btn btn-info" role="button">
+                                        <span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+                                    </a>
+
+                                    <a href="{{url('/questions/edit/'.$question->id)}}" class="btn btn-warning" role="button">
+                                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach

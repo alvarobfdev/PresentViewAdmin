@@ -9,16 +9,97 @@
 namespace App;
 
 
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class AnswersModel extends Model
 {
     protected $table = "app_possible_answers";
 
+    public static $ages = ["16-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80"];
+
     public function getPercentage() {
         $totalAnswers = UserAnswerModel::where("question_id", $this->question_id)->count();
         $totalThisAnswer = UserAnswerModel::where("question_id", $this->question_id)
             ->where("answer_id", $this->id)->count();
+
+        if($totalAnswers > 0)
+            return number_format((float)(($totalThisAnswer/$totalAnswers)*100), 2, '.', '');
+        else return 0.00;
+
+    }
+
+    public function setPercentageProvinces(&$data) {
+        $provinces_json = file_get_contents(public_path("codprov.json"));
+        $provinces_json = json_decode($provinces_json);
+        $answers = UserAnswerModel::where("question_id", $this->question_id)->get();
+
+        foreach($provinces_json as $province) {
+
+            $data[] = $this->getPercentageProvince($answers, $this->id, $province->Id);
+        }
+
+    }
+
+
+    public function setPercentageAges(&$data) {
+
+
+        $answers = UserAnswerModel::where("question_id", $this->question_id)->get();
+
+        foreach(self::$ages as $age) {
+            $age = explode("-", $age);
+            $ageMin = $age[0];
+            $ageMax = $age[1];
+            $data[] = $this->getPercentageAge($answers, $this->id, $ageMin, $ageMax);
+        }
+
+    }
+
+
+    private function getPercentageProvince($answers, $answerId, $provinceId) {
+       $totalAnswers = 0;
+       foreach($answers as $answer) {
+           if($answer->user()->first()->provincia == $provinceId) {
+               $totalAnswers++;
+           }
+       }
+        $totalThisAnswer = 0;
+        foreach($answers as $answer) {
+            if($answer->user()->first()->provincia == $provinceId && $answer->answer_id == $answerId) {
+                $totalThisAnswer++;
+            }
+        }
+
+        if($totalAnswers > 0)
+            return number_format((float)(($totalThisAnswer/$totalAnswers)*100), 2, '.', '');
+        else return 0.00;
+
+    }
+
+    private function getPercentageAge($answers, $answerId, $ageMin, $ageMax) {
+        $totalAnswers = 0;
+        $now = Carbon::now();
+        $dateMax = Carbon::create(($now->year)-$ageMin, $now->month, $now->day);
+        $dateMin = Carbon::create(($now->year)-$ageMax, $now->month, $now->day);
+
+
+        foreach($answers as $answer) {
+
+            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user()->first()->birthdate);
+
+            if($birthdate->timestamp >= $dateMin->timestamp && $birthdate->timestamp <= $dateMax->timestamp) {
+                $totalAnswers++;
+            }
+        }
+        $totalThisAnswer = 0;
+        foreach($answers as $answer) {
+            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user()->first()->birthdate);
+            if($birthdate->timestamp >= $dateMin->timestamp && $birthdate->timestamp <= $dateMax->timestamp && $answer->answer_id == $answerId) {
+                $totalThisAnswer++;
+            }
+        }
 
         if($totalAnswers > 0)
             return number_format((float)(($totalThisAnswer/$totalAnswers)*100), 2, '.', '');

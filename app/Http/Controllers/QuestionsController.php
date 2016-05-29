@@ -11,6 +11,8 @@ namespace App\Http\Controllers;
 
 use App\AnswersModel;
 use App\Http\UsersAppModel;
+use App\Provinces;
+use App\ProvincesModel;
 use App\QuestionsModel;
 use App\Revision;
 use App\UserAnswerModel;
@@ -127,9 +129,93 @@ class QuestionsController extends Controller
         return redirect('questions')->withOk("Pregunta registrada con éxito");
 
 
+    }
 
+    public function getView($questionId) {
+
+        $question = QuestionsModel::where("id", $questionId)->first();
+        $answers = AnswersModel::where("question_id", $questionId)->get();
+
+        $datasets = [];
+        foreach($answers as $answer) {
+            $dataset = new \StdClass();
+            $percentage = $answer->getPercentage();
+
+            $dataset->label = $answer->title;
+            $dataset->data = [$percentage];
+            $dataset->backgroundColor = ["{$this->stringToColorCode($answer->title)}"];
+
+            $datasets[] = $dataset;
+        }
+
+        //CHART PROVINCES
+        $dataProvincia = new \StdClass();
+        $dataProvincia->datasets = [];
+        $dataProvincia->labels = [];
+        $dataset->backgroundColor = [];
+
+        $provinces = ProvincesModel::getProvinces();
+        foreach($provinces as $province) {
+            $dataProvincia->labels[] = $province->Name;
+        }
+        foreach($answers as $answer) {
+
+            $color = $this->stringToColorCode($answer->title);
+
+            $dataset = new \StdClass();
+            $dataset->label = $answer->title;
+            $dataset->data = [];
+            $answer->setPercentageProvinces($dataset->data);
+            foreach($provinces as $province) {
+                $dataset->backgroundColor[] = $color;
+            }
+            $dataProvincia->datasets[] = $dataset;
+        }
+
+        //CHART AGES
+
+        $dataAges = new \StdClass();
+        $dataAges->datasets = [];
+        $dataAges->labels = [];
+        $dataset->backgroundColor = [];
+
+        $ages = AnswersModel::$ages;
+
+        foreach($ages as $age) {
+            $dataAges->labels[] = $age;
+        }
+        foreach($answers as $answer) {
+
+            $color = $this->stringToColorCode($answer->title);
+
+            $dataset = new \StdClass();
+            $dataset->label = $answer->title;
+            $dataset->data = [];
+            $answer->setPercentageAges($dataset->data);
+            foreach($ages as $age) {
+                $dataset->backgroundColor[] = $color;
+            }
+            $dataAges->datasets[] = $dataset;
+        }
+
+
+        $datasets = json_encode($datasets);
+
+        $data['datasets'] = $datasets;
+        $data['dataProvincias'] = json_encode($dataProvincia);
+        $data['dataAges'] = json_encode($dataAges);
+
+
+        return view("questions.view", $data);
 
     }
+
+    private function stringToColorCode($str) {
+        $code = dechex(crc32($str."SOYELMEJOR"));
+        $code = substr($code, 0, 6);
+        return "#".$code;
+    }
+
 
 
 
