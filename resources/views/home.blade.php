@@ -260,7 +260,7 @@ desired effect
                 <li class="header">HEADER</li>
                 <!-- Optionally, you can add icons to the links -->
                 <li class="active"><a href="{{url('questions/')}}"><i class="fa fa-question"></i> <span>Preguntas</span></a></li>
-                
+
             </ul>
             <!-- /.sidebar-menu -->
         </section>
