@@ -67,9 +67,7 @@ class AnswersModel extends Model
        $totalAnswers = 0;
 
 
-        $time_end = microtime(true);
-        echo "POINT TIME 3.2: ".($time_end-QuestionsController::$time_ini) . "<br>";
-       foreach($answers as $answer) {
+        foreach($answers as $answer) {
            if($answer->user->provincia == $provinceId) {
                $totalAnswers++;
            }

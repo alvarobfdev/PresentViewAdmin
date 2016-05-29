@@ -158,9 +158,7 @@ class QuestionsController extends Controller
 
         $datasets = [];
 
-        $time_end = microtime(true);
-        echo "POINT TIME 1: ".($time_end-self::$time_ini) . "<br>";
-
+                
         //GENERAL CHART
 
 
@@ -176,9 +174,7 @@ class QuestionsController extends Controller
         }
 
 
-        $time_end = microtime(true);
-        echo "POINT TIME 2: ".($time_end-self::$time_ini) . "<br>";
-
+                
 
         //CHART PROVINCES
         $dataProvincia = new \StdClass();
@@ -186,9 +182,7 @@ class QuestionsController extends Controller
         $dataProvincia->labels = [];
 
         $provinces = ProvincesModel::getProvinces();
-        $time_end = microtime(true);
-        echo "POINT TIME 2.1: ".($time_end-self::$time_ini) . "<br>";
-        foreach($provinces as $province) {
+                        foreach($provinces as $province) {
             $dataProvincia->labels[] = $province->Name;
         }
         foreach($answers as $answer) {
@@ -205,9 +199,7 @@ class QuestionsController extends Controller
             $dataProvincia->datasets[] = $dataset;
         }
 
-        $time_end = microtime(true);
-        echo "POINT TIME 3: ".($time_end-self::$time_ini) . "<br>";
-
+                
 
 
         //CHART AGES
@@ -235,9 +227,7 @@ class QuestionsController extends Controller
             $dataAges->datasets[] = $dataset;
         }
 
-        $time_end = microtime(true);
-        echo "POINT TIME 4: ".($time_end-self::$time_ini) . "<br>";
-
+                
 
 
         $datasets = json_encode($datasets);
@@ -246,7 +236,6 @@ class QuestionsController extends Controller
         $data['dataProvincias'] = json_encode($dataProvincia);
         $data['dataAges'] = json_encode($dataAges);
 
-        dd("STOP");
         return view("questions.view", $data);
 
     }
