@@ -228,6 +228,7 @@ class QuestionsController extends Controller
         $data['dataProvincias'] = json_encode($dataProvincia);
         $data['dataAges'] = json_encode($dataAges);
 
+        dd("STOP");
 
         return view("questions.view", $data);
 
