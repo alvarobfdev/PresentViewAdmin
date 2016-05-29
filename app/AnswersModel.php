@@ -57,7 +57,6 @@ class AnswersModel extends Model
 
     private function getPercentageProvince($answers, $answerId, $provinceId) {
        $totalAnswers = 0;
-
        $answers->load("user");
        $answers = $answers->toJSON();
        $answers = json_decode($answers);

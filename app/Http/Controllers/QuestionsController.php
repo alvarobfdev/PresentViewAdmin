@@ -135,17 +135,18 @@ class QuestionsController extends Controller
 
         $question = QuestionsModel::where("id", $questionId)->first();
         $answers = AnswersModel::where("question_id", $questionId);
-        $answers_count = $answers->count();
-        $answersCollection = $answers->get();
 
+        $user_answers = UserAnswerModel::where("question_id", $questionId);
+        $user_answers_count = $user_answers->count();
+        $user_answers = $user_answers->get();
         $datasets = [];
 
         //GENERAL CHART
 
 
-        foreach($answersCollection as $answer) {
+        foreach($answers as $answer) {
             $dataset = new \StdClass();
-            $percentage = $answer->getPercentage($answers_count);
+            $percentage = $answer->getPercentage($user_answers_count);
 
             $dataset->label = $answer->title;
             $dataset->data = [$percentage];
@@ -168,14 +169,14 @@ class QuestionsController extends Controller
         foreach($provinces as $province) {
             $dataProvincia->labels[] = $province->Name;
         }
-        foreach($answersCollection as $answer) {
+        foreach($answers as $answer) {
 
             $color = $this->stringToColorCode($answer->title);
 
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageProvinces($dataset->data, $provinces, $answersCollection);
+            $answer->setPercentageProvinces($dataset->data, $provinces, $user_answers);
             foreach($provinces as $province) {
                 $dataset->backgroundColor[] = $color;
             }
@@ -196,14 +197,14 @@ class QuestionsController extends Controller
         foreach($ages as $age) {
             $dataAges->labels[] = $age;
         }
-        foreach($answersCollection as $answer) {
+        foreach($answers as $answer) {
 
             $color = $this->stringToColorCode($answer->title);
 
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageAges($dataset->data, $answersCollection);
+            $answer->setPercentageAges($dataset->data, $user_answers);
             foreach($ages as $age) {
                 $dataset->backgroundColor[] = $color;
             }
