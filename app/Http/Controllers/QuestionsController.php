@@ -136,14 +136,14 @@ class QuestionsController extends Controller
         $question = QuestionsModel::where("id", $questionId)->first();
         $answers = AnswersModel::where("question_id", $questionId);
         $answers_count = $answers->count();
-        $answers = $answers->get();
+        $answersCollection = $answers->get();
 
         $datasets = [];
 
         //GENERAL CHART
 
 
-        foreach($answers as $answer) {
+        foreach($answersCollection as $answer) {
             $dataset = new \StdClass();
             $percentage = $answer->getPercentage($answers_count);
 
@@ -168,14 +168,14 @@ class QuestionsController extends Controller
         foreach($provinces as $province) {
             $dataProvincia->labels[] = $province->Name;
         }
-        foreach($answers as $answer) {
+        foreach($answersCollection as $answer) {
 
             $color = $this->stringToColorCode($answer->title);
 
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageProvinces($dataset->data, $provinces, $answers);
+            $answer->setPercentageProvinces($dataset->data, $provinces, $answersCollection);
             foreach($provinces as $province) {
                 $dataset->backgroundColor[] = $color;
             }
@@ -196,14 +196,14 @@ class QuestionsController extends Controller
         foreach($ages as $age) {
             $dataAges->labels[] = $age;
         }
-        foreach($answers as $answer) {
+        foreach($answersCollection as $answer) {
 
             $color = $this->stringToColorCode($answer->title);
 
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageAges($dataset->data, $answers);
+            $answer->setPercentageAges($dataset->data, $answersCollection);
             foreach($ages as $age) {
                 $dataset->backgroundColor[] = $color;
             }
