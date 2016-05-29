@@ -133,6 +133,8 @@ class QuestionsController extends Controller
 
     public function getView($questionId) {
 
+        $time_ini = microtime(true);
+
         $question = QuestionsModel::where("id", $questionId)->first();
         $answers = AnswersModel::where("question_id", $questionId)->get();
 
@@ -140,6 +142,9 @@ class QuestionsController extends Controller
         $user_answers_count = $user_answers->count();
         $user_answers = $user_answers->get();
         $datasets = [];
+
+        $time_end = microtime(true);
+        echo "POINT TIME 1: ".($time_end-$time_ini) . "<br>";
 
         //GENERAL CHART
 
@@ -156,7 +161,8 @@ class QuestionsController extends Controller
         }
 
 
-
+        $time_end = microtime(true);
+        echo "POINT TIME 2: ".($time_end-$time_ini) . "<br>";
 
 
         //CHART PROVINCES
@@ -181,6 +187,9 @@ class QuestionsController extends Controller
             }
             $dataProvincia->datasets[] = $dataset;
         }
+
+        $time_end = microtime(true);
+        echo "POINT TIME 3: ".($time_end-$time_ini) . "<br>";
 
 
 
@@ -209,6 +218,8 @@ class QuestionsController extends Controller
             $dataAges->datasets[] = $dataset;
         }
 
+        $time_end = microtime(true);
+        echo "POINT TIME 4: ".($time_end-$time_ini) . "<br>";
 
 
 
@@ -218,7 +229,7 @@ class QuestionsController extends Controller
         $data['dataProvincias'] = json_encode($dataProvincia);
         $data['dataAges'] = json_encode($dataAges);
 
-
+        dd("STOP");
         return view("questions.view", $data);
 
     }
