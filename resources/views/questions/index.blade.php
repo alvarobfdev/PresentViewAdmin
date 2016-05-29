@@ -3,6 +3,11 @@
 @section('styles')
     @parent
     <link rel="stylesheet" href="{{asset('/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css')}}">
+    <style>
+        td {
+            cursor: pointer;
+        }
+    </style>
 @endsection
 
 @section('title', 'Listado Preguntas')
@@ -41,7 +46,7 @@
                             @foreach($questions as $question)
                             <tr>
                                 <td>
-                                    <input type="checkbox" data-selectable name="cb_nextquestions[]" value="1">
+                                    <input type="checkbox" data-selectable name="cb_nextquestions[{{$question->id}}]" value="1">
                                 </td>
                                 <td>
                                     {{$question->title}}
