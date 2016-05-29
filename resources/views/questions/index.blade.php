@@ -38,18 +38,22 @@
 
                         </thead>
                         <tbody>
-                            <td>
-                                <input type="checkbox" data-selectable name="cb_nextquestions[]" value="1">
-                            </td>
-                            <td>
-                                ¿Esta es la pregunta?
-                            </td>
-                            <td>
-                                31/01/2016 - 19:30h
-                            </td>
-                            <td>
-                                30s
-                            </td>
+                            @foreach($questions as $question)
+                            <tr>
+                                <td>
+                                    <input type="checkbox" data-selectable name="cb_nextquestions[]" value="1">
+                                </td>
+                                <td>
+                                    {{$question->title}}
+                                </td>
+                                <td>
+                                    {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", 'Europe/Madrid')->format('d/m/Y - H:i:s')}}
+                                </td>
+                                <td>
+                                    {{$question->duration}}s
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
