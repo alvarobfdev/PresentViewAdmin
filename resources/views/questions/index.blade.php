@@ -47,7 +47,7 @@
                                     {{$question->title}}
                                 </td>
                                 <td>
-                                    {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", 'Europe/Madrid')->format('d/m/Y - H:i:s')}}
+                                    {{\Carbon\Carbon::createFromFormat("Y-m-d H:i:s", $question->time_ini, 'Europe/Madrid')->format('d/m/Y - H:i:s')}}
                                 </td>
                                 <td>
                                     {{$question->duration}}s
