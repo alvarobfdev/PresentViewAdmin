@@ -134,7 +134,7 @@ class QuestionsController extends Controller
     public function getView($questionId) {
 
         $question = QuestionsModel::where("id", $questionId)->first();
-        $answers = AnswersModel::where("question_id", $questionId);
+        $answers = AnswersModel::where("question_id", $questionId)->get();
 
         $user_answers = UserAnswerModel::where("question_id", $questionId);
         $user_answers_count = $user_answers->count();
@@ -163,7 +163,6 @@ class QuestionsController extends Controller
         $dataProvincia = new \StdClass();
         $dataProvincia->datasets = [];
         $dataProvincia->labels = [];
-        $dataset->backgroundColor = [];
 
         $provinces = ProvincesModel::getProvinces();
         foreach($provinces as $province) {
@@ -190,7 +189,6 @@ class QuestionsController extends Controller
         $dataAges = new \StdClass();
         $dataAges->datasets = [];
         $dataAges->labels = [];
-        $dataset->backgroundColor = [];
 
         $ages = AnswersModel::$ages;
 
@@ -220,7 +218,6 @@ class QuestionsController extends Controller
         $data['dataProvincias'] = json_encode($dataProvincia);
         $data['dataAges'] = json_encode($dataAges);
 
-        dd("STOP");
 
         return view("questions.view", $data);
 
