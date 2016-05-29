@@ -19,8 +19,8 @@ class AnswersModel extends Model
 
     public static $ages = ["16-20", "21-30", "31-40", "41-50", "51-60", "61-70", "71-80"];
 
-    public function getPercentage() {
-        $totalAnswers = UserAnswerModel::where("question_id", $this->question_id)->count();
+    public function getPercentage($answers_count) {
+        $totalAnswers = $answers_count;
         $totalThisAnswer = UserAnswerModel::where("question_id", $this->question_id)
             ->where("answer_id", $this->id)->count();
 
@@ -30,34 +30,19 @@ class AnswersModel extends Model
 
     }
 
-    public function setPercentageProvinces(&$data) {
+    public function setPercentageProvinces(&$data, $provinces_json, $answers) {
 
-        $time_ini = microtime(true);
-        $provinces_json = file_get_contents(public_path("codprov.json"));
-        $time_end = microtime(true);
-
-        echo "READ JSON TIME:" . ($time_end-$time_ini);
-
-        $time_ini = microtime(true);
-
-        $provinces_json = json_decode($provinces_json);
-        $answers = UserAnswerModel::where("question_id", $this->question_id)->get();
 
         foreach($provinces_json as $province) {
 
             $data[] = $this->getPercentageProvince($answers, $this->id, $province->Id);
         }
-        $time_end = microtime(true);
-        echo "READ READ DB TIME:" . ($time_end-$time_ini);
 
 
     }
 
 
-    public function setPercentageAges(&$data) {
-
-
-        $answers = UserAnswerModel::where("question_id", $this->question_id)->get();
+    public function setPercentageAges(&$data, $answers) {
 
         foreach(self::$ages as $age) {
             $age = explode("-", $age);

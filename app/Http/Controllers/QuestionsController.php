@@ -134,17 +134,18 @@ class QuestionsController extends Controller
     public function getView($questionId) {
 
         $question = QuestionsModel::where("id", $questionId)->first();
-        $answers = AnswersModel::where("question_id", $questionId)->get();
+        $answers = AnswersModel::where("question_id", $questionId);
+        $answers_count = $answers->count();
+        $answers = $answers->get();
 
         $datasets = [];
 
         //GENERAL CHART
 
-        $time_ini = microtime(true);
 
         foreach($answers as $answer) {
             $dataset = new \StdClass();
-            $percentage = $answer->getPercentage();
+            $percentage = $answer->getPercentage($answers_count);
 
             $dataset->label = $answer->title;
             $dataset->data = [$percentage];
@@ -153,11 +154,8 @@ class QuestionsController extends Controller
             $datasets[] = $dataset;
         }
 
-        $time_end = microtime(true);
 
-        echo "GENERAL CHART EXECUTION TIME:" . ($time_end-$time_ini);
 
-        $time_ini = microtime(true);
 
 
         //CHART PROVINCES
@@ -177,18 +175,13 @@ class QuestionsController extends Controller
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageProvinces($dataset->data);
+            $answer->setPercentageProvinces($dataset->data, $provinces, $answers);
             foreach($provinces as $province) {
                 $dataset->backgroundColor[] = $color;
             }
             $dataProvincia->datasets[] = $dataset;
         }
 
-        $time_end = microtime(true);
-
-        echo "PROVINCES EXECUTION TIME:" . ($time_end-$time_ini);
-
-        $time_ini = microtime(true);
 
 
         //CHART AGES
@@ -210,16 +203,14 @@ class QuestionsController extends Controller
             $dataset = new \StdClass();
             $dataset->label = $answer->title;
             $dataset->data = [];
-            $answer->setPercentageAges($dataset->data);
+            $answer->setPercentageAges($dataset->data, $answers);
             foreach($ages as $age) {
                 $dataset->backgroundColor[] = $color;
             }
             $dataAges->datasets[] = $dataset;
         }
 
-        $time_end = microtime(true);
 
-        echo "AGES EXECUTION TIME:" . ($time_end-$time_ini);
 
 
         $datasets = json_encode($datasets);
