@@ -137,6 +137,11 @@ class QuestionsController extends Controller
         $answers = AnswersModel::where("question_id", $questionId)->get();
 
         $datasets = [];
+
+        //GENERAL CHART
+
+        $time_ini = microtime(true);
+
         foreach($answers as $answer) {
             $dataset = new \StdClass();
             $percentage = $answer->getPercentage();
@@ -147,6 +152,13 @@ class QuestionsController extends Controller
 
             $datasets[] = $dataset;
         }
+
+        $time_end = microtime(true);
+
+        echo "GENERAL CHART EXECUTION TIME:" . $time_end-$time_ini;
+
+        $time_ini = microtime(true);
+
 
         //CHART PROVINCES
         $dataProvincia = new \StdClass();
@@ -171,6 +183,13 @@ class QuestionsController extends Controller
             }
             $dataProvincia->datasets[] = $dataset;
         }
+
+        $time_end = microtime(true);
+
+        echo "PROVINCES EXECUTION TIME:" . $time_end-$time_ini;
+
+        $time_ini = microtime(true);
+
 
         //CHART AGES
 
@@ -197,6 +216,10 @@ class QuestionsController extends Controller
             }
             $dataAges->datasets[] = $dataset;
         }
+
+        $time_end = microtime(true);
+
+        echo "AGES EXECUTION TIME:" . $time_end-$time_ini;
 
 
         $datasets = json_encode($datasets);
