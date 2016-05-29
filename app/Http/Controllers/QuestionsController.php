@@ -150,8 +150,11 @@ class QuestionsController extends Controller
         $user_answers = $user_answers->get();
 
         $user_answers->load("user");
-        $user_answers = $answers->toJSON();
-        $user_answers = json_decode($answers);
+
+        $user_answers = $user_answers->toJSON();
+        $user_answers = json_decode($user_answers);
+
+
 
         $datasets = [];
 
