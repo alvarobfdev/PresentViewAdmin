@@ -22,7 +22,7 @@ class QuestionsController extends Controller
 {
     public function getIndex(Request $request) {
 
-        $questions = QuestionsModel::all()->orderBy('time_ini', 'desc')->get();
+        $questions = QuestionsModel::orderBy('time_ini', 'desc')->get();
         $data["questions"] = $questions;
         return view("questions.index", $data);
     }
