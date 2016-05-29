@@ -125,8 +125,8 @@ class Kernel extends ConsoleKernel
         $question = QuestionsModel::where("id", $sleepQuestion->id)->first();
         if($question->finised == 0) {
             $sleepQuestion->finished = 1;
-            $this->randomAnswers($sleepQuestion);
             $this->addWinner($sleepQuestion->id);
+            $this->randomAnswers($sleepQuestion);
             $sleepQuestion->save();
             Revision::updateRevision();
         }
