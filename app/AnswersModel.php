@@ -58,16 +58,22 @@ class AnswersModel extends Model
     }
 
 
+
     private function getPercentageProvince($answers, $answerId, $provinceId) {
        $totalAnswers = 0;
+
+       $answers->load("user");
+       $answers = $answers->toJSON();
+       $answers = json_decode($answers);
+
        foreach($answers as $answer) {
-           if($answer->user()->first()->provincia == $provinceId) {
+           if($answer->user->provincia == $provinceId) {
                $totalAnswers++;
            }
        }
         $totalThisAnswer = 0;
         foreach($answers as $answer) {
-            if($answer->user()->first()->provincia == $provinceId && $answer->answer_id == $answerId) {
+            if($answer->user->provincia == $provinceId && $answer->answer_id == $answerId) {
                 $totalThisAnswer++;
             }
         }
@@ -84,10 +90,13 @@ class AnswersModel extends Model
         $dateMax = Carbon::create(($now->year)-$ageMin, $now->month, $now->day);
         $dateMin = Carbon::create(($now->year)-$ageMax, $now->month, $now->day);
 
+        $answers->load("user");
+        $answers = $answers->toJSON();
+        $answers = json_decode($answers);
 
         foreach($answers as $answer) {
 
-            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user()->first()->birthdate);
+            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user->birthdate);
 
             if($birthdate->timestamp >= $dateMin->timestamp && $birthdate->timestamp <= $dateMax->timestamp) {
                 $totalAnswers++;
@@ -95,7 +104,7 @@ class AnswersModel extends Model
         }
         $totalThisAnswer = 0;
         foreach($answers as $answer) {
-            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user()->first()->birthdate);
+            $birthdate = Carbon::createFromFormat("Y-m-d", $answer->user->birthdate);
             if($birthdate->timestamp >= $dateMin->timestamp && $birthdate->timestamp <= $dateMax->timestamp && $answer->answer_id == $answerId) {
                 $totalThisAnswer++;
             }
