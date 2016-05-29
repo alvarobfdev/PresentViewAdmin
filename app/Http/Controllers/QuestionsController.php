@@ -155,7 +155,7 @@ class QuestionsController extends Controller
 
         $time_end = microtime(true);
 
-        echo "GENERAL CHART EXECUTION TIME:" . $time_end-$time_ini;
+        echo "GENERAL CHART EXECUTION TIME:" . ($time_end-$time_ini);
 
         $time_ini = microtime(true);
 
@@ -186,7 +186,7 @@ class QuestionsController extends Controller
 
         $time_end = microtime(true);
 
-        echo "PROVINCES EXECUTION TIME:" . $time_end-$time_ini;
+        echo "PROVINCES EXECUTION TIME:" . ($time_end-$time_ini);
 
         $time_ini = microtime(true);
 
@@ -219,7 +219,7 @@ class QuestionsController extends Controller
 
         $time_end = microtime(true);
 
-        echo "AGES EXECUTION TIME:" . $time_end-$time_ini;
+        echo "AGES EXECUTION TIME:" . ($time_end-$time_ini);
 
 
         $datasets = json_encode($datasets);
