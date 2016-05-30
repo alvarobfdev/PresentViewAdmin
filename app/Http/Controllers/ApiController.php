@@ -344,6 +344,41 @@ class ApiController extends Controller
 
     }
 
+    public function postStandardRegistration(Request $request) {
+
+        try {
+            $response = [
+                "status" => 1,
+                "registered_yet" => false,
+                "registered" => false
+            ];
+
+
+            $user = UsersAppModel::where("email", $request->get("email"))->get();
+
+            if ($user) {
+                $response["registered_yet"] = true;
+                return $response;
+            }
+
+            $user = new UsersAppModel();
+            $user->email = $request->get("user");
+            $user->pass = $request->get("pass");
+            $user->simId = $request->get("simId");
+            $user->save();
+            
+            $response["registered"] = true;
+            return $response;
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+
+
+    }
+
     public function postRegisterFromGoogle(Request $request) {
 
         try {
