@@ -444,7 +444,7 @@ class ApiController extends Controller
 
             $user = UsersAppModel::existsGoogleAccount($googleId);
 
-            
+
 
 
             $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
@@ -537,6 +537,10 @@ class ApiController extends Controller
             $user->sim_id=rand(11111, 99999);
             $user->save();
         }
+    }
+
+    public function getUpdateRevision() {
+        Revision::updateRevision();
     }
 
 
