@@ -365,7 +365,7 @@ class ApiController extends Controller
             $user = new UsersAppModel();
             $user->email = $request->get("user");
             $user->password = md5(sha1($request->get("pass")));
-            $user->simId = $request->get("simId");
+            $user->sim_id = $request->get("simId");
             $user->save();
 
             $response["registered"] = true;
