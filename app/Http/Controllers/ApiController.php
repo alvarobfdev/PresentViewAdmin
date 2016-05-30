@@ -350,7 +350,7 @@ class ApiController extends Controller
             $response = [
                 "status" => 1,
                 "registered_yet" => false,
-                "registered" => false
+                "registrated" => false
             ];
 
 
