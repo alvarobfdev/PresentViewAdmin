@@ -350,7 +350,8 @@ class ApiController extends Controller
             $response = [
                 "status" => 1,
                 "registered_yet" => false,
-                "registrated" => false
+                "registrated" => false,
+                "not_data_completed" => false
             ];
 
 
@@ -359,6 +360,9 @@ class ApiController extends Controller
 
             if ($user) {
                 $response["registered_yet"] = true;
+                if(!$user->name) {
+                    $response["not_data_completed"] = true;
+                }
                 return $response;
             }
 
@@ -369,6 +373,52 @@ class ApiController extends Controller
             $user->save();
 
             $response["registrated"] = true;
+            return $response;
+        }
+        catch(\Exception $e) {
+            $response["status"] = 0;
+            $response["message"] = $e->getMessage();
+            return $response;
+        }
+
+
+    }
+
+
+    public function postStandardRegistrationComplete(Request $request) {
+
+        try {
+            $response = [
+                "status" => 1,
+                "alreadyRegistered" => false,
+                "registered_ok" => false
+            ];
+
+
+            $user = UsersAppModel::where("email", $request->get("email"))->first();
+
+
+            if (!$user) {
+                $response["registered_ok"] = false;
+                $response["message"] = "Fallo al registrar! Vuelva a intentarlo en unos instantes";
+                return $response;
+            }
+
+
+            $user->gender = $request->get("gender");
+            $birthdate = Carbon::createFromFormat("d/m/Y", $request->get("birthdate"))->toDateString();
+            $user->birthdate = $birthdate;
+            $user->provincia = $request->get("provincia");
+            $user->ciudad = $request->get("ciudad");
+            $user->name = $request->get("name");
+            $user->surname = $request->get("surname");
+            $user->token = sha1(uniqid());
+
+
+            $user->save();
+
+            $response["user"] = $user;
+            $response["registered_ok"] = true;
             return $response;
         }
         catch(\Exception $e) {
@@ -411,7 +461,9 @@ class ApiController extends Controller
                 $birthdate,
                 $request->get("sim_id"),
                 $request->get("google_id"),
-                $user
+                $user,
+                $request->get("name"),
+                $request->get("surname")
             );
 
             if(!$userRegistrated) {

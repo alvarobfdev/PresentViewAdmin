@@ -35,7 +35,7 @@ class RegistrationController extends Controller
     }
 
 
-    public function registerUser($email, $gender, $provincia, $ciudad, $birthdate, $sim_id, $google_id=null, $user = null) {
+    public function registerUser($email, $gender, $provincia, $ciudad, $birthdate, $sim_id, $google_id=null, $user = null, $name, $surname) {
         if(!$user)
             $user = new UsersAppModel();
         $user->email = $email;
@@ -44,6 +44,8 @@ class RegistrationController extends Controller
         $user->ciudad = $ciudad;
         $user->birthdate = $birthdate;
         $user->sim_id = $sim_id;
+        $user->name = $name;
+        $user->surname = $surname;
 
         if($google_id != null) {
             $user->google_id = $google_id;
