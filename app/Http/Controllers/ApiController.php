@@ -354,7 +354,7 @@ class ApiController extends Controller
             ];
 
 
-            $user = UsersAppModel::where("email", $request->get("email"))->first();
+            $user = UsersAppModel::where("email", $request->get("user"))->first();
 
 
             if ($user) {
