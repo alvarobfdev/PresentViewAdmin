@@ -354,7 +354,8 @@ class ApiController extends Controller
             ];
 
 
-            $user = UsersAppModel::where("email", $request->get("email"))->get();
+            $user = UsersAppModel::where("email", $request->get("email"))->first();
+
 
             if ($user) {
                 $response["registered_yet"] = true;
