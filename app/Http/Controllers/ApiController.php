@@ -368,7 +368,7 @@ class ApiController extends Controller
             $user->sim_id = $request->get("simId");
             $user->save();
 
-            $response["registered"] = true;
+            $response["registrated"] = true;
             return $response;
         }
         catch(\Exception $e) {
