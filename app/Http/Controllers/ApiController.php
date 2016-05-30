@@ -250,7 +250,6 @@ class ApiController extends Controller
             if($user) {
                 $response["isValidToken"] = true;
             }
-            $user->user_id = $user->id;
             return $response;
         }
         catch(\Exception $e) {
@@ -357,7 +356,7 @@ class ApiController extends Controller
 
             $user = UsersAppModel::where("email", $request->get("email"))->first();
 
-            var_dump($user);
+
             if ($user) {
                 $response["registered_yet"] = true;
                 if(!$user->name) {
