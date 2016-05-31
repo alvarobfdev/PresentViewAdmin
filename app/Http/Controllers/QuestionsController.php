@@ -41,6 +41,76 @@ class QuestionsController extends Controller
         return view("questions.add");
     }
 
+    public function getEdit($id) {
+        $question = QuestionsModel::where("id", $id)->first();
+
+        return view("questions.edit", ["question"=>$question]);
+    }
+
+    public function postEdit($id) {
+        $fail = false;
+
+        $validator = \Validator::make(\Request::all(), [
+            'questionTitle' => 'required|min:10',
+            'datetime'      => 'required|date_format:"d/m/Y H:i',
+            'duration'      =>  'numeric|min:30|max:120',
+            'prizeTitle'    =>  'string|min:5|required_with:activatePrize'
+        ]);
+
+        if($validator->fails()) {
+            return redirect('questions/edit/'.$id)
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $question = QuestionsModel::where("id", $id)->first();
+
+        if(!$question) {
+            return redirect('questions/edit/'.$id)
+                ->withErrors(["fail_url" => "No existe esta pregunta"])
+                ->withInput();
+        }
+
+        $question->title = \Request::get("questionTitle");
+        $question->time_ini = Carbon::createFromFormat("d/m/Y H:i", \Request::get("datetime"))->toDateTimeString();
+        $question->duration = \Request::get("duration");
+
+        if(\Request::has("activatePrize")) {
+            $question->prize = 1;
+            $question->prize_title = \Request::get("prizeTitle");
+        }
+
+        else {
+            $question->prize = 0;
+            $question->prize_title = NULL;
+        }
+
+        $result = Revision::updateRevision();
+
+        if($result != "success") {
+            return redirect('questions/add')
+                ->withErrors($result)
+                ->withInput();
+        }
+
+
+        if(!$question->save()) {
+            return redirect('questions/edit/'.$id)
+                ->withErrors(["fail_bbdd" => "Fallo al guardar!"])
+                ->withInput();
+        }
+
+
+
+        return redirect('questions')->withOk("Pregunta actualizada con éxito");
+
+
+
+
+
+
+    }
+
     public function postAdd(Request $request) {
 
         $fail = false;
